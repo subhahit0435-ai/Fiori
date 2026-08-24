@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP Fiori Troubleshooter</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      background: #f7f8fa;
+      color: #1f2328;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    .app-header {
+      max-width: 600px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: #0f62fe;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .app-header h1 { font-size: 22px; font-weight: 700; }
+    .app-header p  { color: #57606a; font-size: 13px; margin-top: 4px; }
+
+    /* No-data banner */
+    .no-data-banner {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 18px 22px;
+      color: #713f12;
+      font-size: 13px;
+    }
+    .no-data-banner strong { display: block; font-size: 15px; margin-bottom: 6px; }
+    .no-data-banner a { color: #c8372d; font-weight: 600; }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 28px;
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    .step-bar { display: flex; gap: 8px; margin-bottom: 20px; }
+    .step-dot  {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #d1d5db;
+    }
+    .step-dot.active { background: #0f62fe; }
+    .step-dot.done   { background: #22c55e; }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .section-sub {
+      font-size: 13px;
+      color: #57606a;
+      margin-bottom: 22px;
+    }
+
+    .ps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 500px) { .ps-grid { grid-template-columns: 1fr; } }
+
+    .ps-card {
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      transition: border-color .15s, background .15s;
+    }
+    .ps-card:hover    { border-color: #0f62fe; background: #f0f5ff; }
+    .ps-card.selected { border-color: #0f62fe; background: #eef3ff; }
+    .ps-icon { font-size: 20px; flex-shrink: 0; }
+    .ps-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .ps-card p  { font-size: 12px; color: #57606a; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .form-group input[type="text"],
+    .form-group textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+      color: #1f2328;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .form-group input[type="text"]:focus,
+    .form-group textarea:focus { border-color: #0f62fe; box-shadow: 0 0 0 3px rgba(15,98,254,.1); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-hint { font-size: 12px; color: #57606a; margin-top: 4px; }
+
+    .upload-zone {
+      border: 2px dashed #d1d5db;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: border-color .15s, background .15s;
+    }
+    .upload-zone:hover { border-color: #0f62fe; background: #f0f5ff; }
+    .upload-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-zone .upload-icon { font-size: 28px; margin-bottom: 6px; }
+    .upload-zone p { font-size: 13px; color: #57606a; }
+    .upload-zone .file-name {
+      margin-top: 8px; font-size: 13px; font-weight: 600; color: #166534;
+    }
+
+    .btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    .btn {
+      padding: 9px 20px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-primary   { background: #0f62fe; color: #fff; }
+    .btn-primary:hover:not(:disabled)   { background: #0353e9; }
+    .btn-secondary { background: #f3f4f6; color: #1f2328; border: 1px solid #d1d5db; }
+    .btn-secondary:hover:not(:disabled) { background: #e9eaec; }
+
+    .result-box {
+      border-radius: 8px;
+      padding: 16px 18px;
+      font-size: 13px;
+    }
+    .result-box.error   { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+    .result-box.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+    .result-box.warning { background: #fffbeb; border: 1px solid #fde68a; color: #713f12; }
+    .result-box.info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a5f; }
+
+    .result-title { font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+
+    table.result-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    table.result-table th {
+      text-align: left; padding: 7px 10px;
+      background: rgba(0,0,0,.04);
+      border: 1px solid rgba(0,0,0,.08);
+      font-weight: 600;
+    }
+    table.result-table td  { padding: 7px 10px; border: 1px solid rgba(0,0,0,.08); }
+    table.result-table tr:nth-child(even) td { background: rgba(0,0,0,.03); }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-green  { background: #dcfce7; color: #166534; }
+    .badge-red    { background: #fee2e2; color: #991b1b; }
+    .badge-blue   { background: #dbeafe; color: #1e40af; }
+    .badge-yellow { background: #fef9c3; color: #854d0e; }
+
+    .next-steps { margin-top: 14px; padding-left: 18px; }
+    .next-steps li { margin-bottom: 6px; padding-left: 4px; }
+
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
+
+    .spinner {
+      width: 18px; height: 18px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #0f62fe;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .restart-row { text-align: center; margin-top: 8px; }
+    .restart-row a { font-size: 13px; color: #0f62fe; cursor: pointer; text-decoration: underline; }
+
+    .hidden { display: none !important; }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 16px;
+      margin-top: 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="logo">
+    <div class="logo-icon">SF</div>
+    <div>
+      <h1>SAP Fiori Troubleshooter</h1>
+      <p>Diagnose Fiori Launchpad issues step by step.</p>
+    </div>
+  </div>
+</div>
+
+<!-- No-data guard banner (shown if admin hasn't loaded data yet) -->
+<div class="no-data-banner hidden" id="no-data-banner">
+  <strong>⚠️ Data Not Available</strong>
+  The SAP reference data has not been loaded yet. Please ask your SAP admin to open
+  <a href="admin.html">admin.html</a> and upload the required files before using this tool.
+</div>
+
+<!-- Step 1: Problem Statement -->
+<div class="card hidden" id="step-ps">
+  <div class="step-bar">
+    <div class="step-dot active"></div>
+    <div class="step-dot"></div>
+    <div class="step-dot"></div>
+  </div>
+  <div class="section-title">Step 1 — Select Problem Statement</div>
+  <div class="section-sub">Choose the option that best describes your issue.</div>
+
+  <div class="ps-grid">
+    <div class="ps-card" data-ps="1">
+      <div class="ps-icon">🔴</div>
+      <div>
+        <h3>Missing Tile</h3>
+        <p>Tile does not appear on my Fiori Launchpad at all.</p>
+      </div>
+    </div>
+    <div class="ps-card" data-ps="2">
+      <div class="ps-icon">🟠</div>
+      <div>
+        <h3>Tile Not Visible After Assignment</h3>
+        <p>Admin assigned the tile but I still cannot see it.</p>
+      </div>
+    </div>
+    <div class="ps-card" data-ps="3">
+      <div class="ps-icon">🟡</div>
+      <div>
+        <h3>Transaction Missing in Tile</h3>
+        <p>I can see the tile but a specific transaction is missing.</p>
+      </div>
+    </div>
+    <div class="ps-card" data-ps="4">
+      <div class="ps-icon">🔵</div>
+      <div>
+        <h3>Authorization Issue</h3>
+        <p>I have the tile but get an authorization error when using it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" id="btn-ps-next" disabled>Continue →</button>
+  </div>
+</div>
+
+<!-- Step 2: Inputs -->
+<div class="card hidden" id="step-inputs">
+  <div class="step-bar">
+    <div class="step-dot done"></div>
+    <div class="step-dot active"></div>
+    <div class="step-dot"></div>
+  </div>
+  <div class="section-title">Step 2 — Provide Details</div>
+  <div class="section-sub" id="inputs-sub">Please fill in the details below.</div>
+
+  <div class="form-group">
+    <label for="input-userid">Your User ID <span style="color:#ef4444">*</span></label>
+    <input type="text" id="input-userid" placeholder="e.g. AROYCH" autocomplete="off" />
+  </div>
+
+  <div class="form-group">
+    <label for="input-tile">Tile Name <span style="color:#ef4444">*</span></label>
+    <input type="text" id="input-tile" placeholder="e.g. Display Outbound Delivery" autocomplete="off" />
+  </div>
+
+  <div class="form-group hidden" id="group-transaction">
+    <label for="input-transaction">Missing Transaction Name <span style="color:#ef4444">*</span></label>
+    <input type="text" id="input-transaction" placeholder="e.g. VL02N" autocomplete="off" />
+    <div class="form-hint">Enter the transaction code or name that is missing from the tile.</div>
+    <div style="margin-top:10px;">
+      <label style="font-size:13px; font-weight:600; display:block; margin-bottom:6px;">
+        Screenshot <span style="color:#9ca3af; font-weight:400;">(optional — attach if you have one)</span>
+      </label>
+      <div class="upload-zone" id="zone-ps3-screenshot" style="padding:14px;">
+        <input type="file" accept="image/*" id="file-ps3-screenshot" />
+        <div class="upload-icon" style="font-size:20px;">🖼️</div>
+        <p style="font-size:12px;">Click to attach a screenshot</p>
+        <div class="file-name hidden" id="fname-ps3-screenshot"></div>
+        <img id="preview-ps3-screenshot" class="hidden" style="max-width:100%; max-height:200px; margin-top:10px; border-radius:6px; border:1px solid #e5e7eb;" />
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group hidden" id="group-auth">
+    <label>Missing Authorization Object <span style="color:#ef4444">*</span></label>
+    <input type="text" id="input-auth" placeholder="e.g. S_TCODE, V_VBAK_AAT" autocomplete="off" />
+    <div class="form-hint">Enter the missing authorization object name from your SU53 output.</div>
+    <div style="margin-top:10px;">
+      <label style="font-size:13px; font-weight:600; display:block; margin-bottom:6px;">
+        SU53 Screenshot <span style="color:#9ca3af; font-weight:400;">(optional — attach for reference)</span>
+      </label>
+      <div class="upload-zone" id="zone-su53-screenshot" style="padding:14px;">
+        <input type="file" accept="image/*" id="file-su53-screenshot" />
+        <div class="upload-icon" style="font-size:20px;">🖼️</div>
+        <p style="font-size:12px;">Click to attach your SU53 screenshot</p>
+        <div class="file-name hidden" id="fname-su53-screenshot"></div>
+        <img id="preview-su53-screenshot" class="hidden" style="max-width:100%; max-height:200px; margin-top:10px; border-radius:6px; border:1px solid #e5e7eb;" />
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" id="btn-inputs-back">← Back</button>
+    <button class="btn btn-primary"   id="btn-inputs-next">Analyze →</button>
+  </div>
+</div>
+
+<!-- Step 3: Result -->
+<div class="card hidden" id="step-result">
+  <div class="step-bar">
+    <div class="step-dot done"></div>
+    <div class="step-dot done"></div>
+    <div class="step-dot active"></div>
+  </div>
+  <div class="section-title">Step 3 — Analysis Result</div>
+  <div class="section-sub" id="result-sub"></div>
+  <div id="result-content"></div>
+  <hr class="divider" />
+  <div class="btn-row" style="justify-content: space-between; align-items: center; margin-top: 0;">
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-secondary" id="btn-result-back-inputs">← Back to Details</button>
+      <button class="btn btn-secondary" id="btn-result-back-ps">↩ Change Problem Type</button>
+    </div>
+    <a id="btn-restart" style="font-size:13px; color:#0f62fe; cursor:pointer; text-decoration:underline;">⟳ New Investigation</a>
+  </div>
+</div>
+
+<footer>Made with IBM Bob &nbsp;|&nbsp; SAP Fiori Troubleshooter &nbsp;|&nbsp; All data processed locally in your browser</footer>
+
+<script src="lz-string.min.js"></script>
+<script>
+// ─── Storage keys (must match admin.html) ─────────────────────────────────────
+const KEYS = {
+  flpca:    'sft_flpca',
+  agrusers: 'sft_agrusers',
+  agragrs:  'sft_agragrs',
+  agr1251:  'sft_agr1251'
+};
+
+// ─── State ────────────────────────────────────────────────────────────────────
+const state = {
+  data: { flpca: null, agrusers: null, agragrs: null, agr1251: null },
+  ps:          null,
+  userId:      '',
+  tileName:    '',
+  transaction: '',
+  auth:        ''
+};
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function show(id)  { document.getElementById(id).classList.remove('hidden'); }
+function hide(id)  { document.getElementById(id).classList.add('hidden'); }
+function val(id)   { return document.getElementById(id).value.trim(); }
+
+// ─── Decompress and parse from localStorage ───────────────────────────────────
+function retrieve(storageKey) {
+  const compressed = localStorage.getItem(storageKey);
+  if (!compressed) return null;
+  const json = LZString.decompressFromUTF16(compressed);
+  return json ? JSON.parse(json) : null;
+}
+
+// ─── Load data from localStorage ──────────────────────────────────────────────
+function loadStoredData() {
+  let allPresent = true;
+  ['flpca', 'agrusers', 'agragrs'].forEach(key => {
+    try {
+      const rows = retrieve(KEYS[key]);
+      if (rows) {
+        state.data[key] = rows;
+      } else {
+        allPresent = false;
+      }
+    } catch { allPresent = false; }
+  });
+
+  // agr1251 is optional
+  try {
+    const rows = retrieve(KEYS.agr1251);
+    if (rows) state.data.agr1251 = rows;
+  } catch { /* optional — ignore */ }
+
+  return allPresent;
+}
+
+// ─── Boot: show guard or main flow ────────────────────────────────────────────
+if (loadStoredData()) {
+  show('step-ps');
+} else {
+  show('no-data-banner');
+}
+
+// ─── Screenshot preview ───────────────────────────────────────────────────────
+function setupScreenshotInput(inputId, fnameId, previewId) {
+  document.getElementById(inputId).addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+    const fname   = document.getElementById(fnameId);
+    const preview = document.getElementById(previewId);
+    fname.textContent = '📎 ' + file.name;
+    fname.classList.remove('hidden');
+    const reader = new FileReader();
+    reader.onload = e => { preview.src = e.target.result; preview.classList.remove('hidden'); };
+    reader.readAsDataURL(file);
+  });
+}
+setupScreenshotInput('file-ps3-screenshot', 'fname-ps3-screenshot', 'preview-ps3-screenshot');
+setupScreenshotInput('file-su53-screenshot', 'fname-su53-screenshot', 'preview-su53-screenshot');
+
+// ─── Step 1: Problem Statement ────────────────────────────────────────────────
+document.querySelectorAll('.ps-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.ps-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    state.ps = card.dataset.ps;
+    document.getElementById('btn-ps-next').disabled = false;
+  });
+});
+
+document.getElementById('btn-ps-next').addEventListener('click', () => {
+  hide('group-transaction');
+  hide('group-auth');
+  if (state.ps === '3') show('group-transaction');
+  if (state.ps === '4') show('group-auth');
+
+  const subs = {
+    '1': 'Problem Statement 1 — Missing Tile',
+    '2': 'Problem Statement 2 — Tile Not Visible After Assignment',
+    '3': 'Problem Statement 3 — Transaction Missing in Tile',
+    '4': 'Problem Statement 4 — Authorization Issue'
+  };
+  document.getElementById('inputs-sub').textContent = subs[state.ps];
+  hide('step-ps'); show('step-inputs');
+});
+
+// ─── Step 2: Inputs ───────────────────────────────────────────────────────────
+document.getElementById('btn-inputs-back').addEventListener('click', () => {
+  hide('step-inputs'); show('step-ps');
+});
+
+document.getElementById('btn-inputs-next').addEventListener('click', () => {
+  state.userId      = val('input-userid');
+  state.tileName    = val('input-tile');
+  state.transaction = val('input-transaction');
+  state.auth        = val('input-auth');
+
+  if (!state.userId || !state.tileName) {
+    alert('Please fill in User ID and Tile Name.');
+    return;
+  }
+  if (state.ps === '3' && !state.transaction) {
+    alert('Please provide the missing transaction name.');
+    return;
+  }
+  if (state.ps === '4' && !state.auth) {
+    alert('Please provide the missing authorization object.');
+    return;
+  }
+
+  runAnalysis();
+  hide('step-inputs');
+  show('step-result');
+});
+
+// ─── Step 3: Result back buttons ──────────────────────────────────────────────
+document.getElementById('btn-result-back-inputs').addEventListener('click', () => {
+  hide('step-result'); show('step-inputs');
+});
+
+document.getElementById('btn-result-back-ps').addEventListener('click', () => {
+  hide('step-result'); show('step-ps');
+});
+
+// ─── Analysis ─────────────────────────────────────────────────────────────────
+function runAnalysis() {
+  const ps = state.ps;
+  document.getElementById('result-sub').textContent =
+    `User: ${state.userId}  |  Tile: ${state.tileName}  |  Problem Statement: ${ps}`;
+
+  if (ps === '1' || ps === '2') analyzePS1or2();
+  else if (ps === '3') analyzePS3();
+  else if (ps === '4') analyzePS4();
+}
+
+// ── PS1 & PS2 ─────────────────────────────────────────────────────────────────
+function analyzePS1or2() {
+  const tileName = state.tileName.toLowerCase();
+  const userId   = state.userId.toUpperCase();
+
+  const flpcaRows = state.data.flpca;
+  const singleRoles = [...new Set(
+    flpcaRows
+      .filter(r => (r['Title/Subtitle/Information'] || '').toLowerCase() === tileName)
+      .map(r => (r['Role'] || '').trim())
+      .filter(Boolean)
+  )];
+
+  if (singleRoles.length === 0) {
+    renderResult('warning', '⚠️ Tile Not Found',
+      `<p>No roles were found carrying a tile named <strong>"${state.tileName}"</strong> in the FLPCA data.</p>
+       <p style="margin-top:8px">Please check the tile name spelling and try again.</p>`);
+    return;
+  }
+
+  const agrsRows = state.data.agragrs;
+  const compositeRoles = [...new Set(
+    agrsRows
+      .filter(r => singleRoles.includes((r['CHILD_AGR'] || '').trim()))
+      .map(r => (r['AGR_NAME'] || '').trim())
+      .filter(Boolean)
+  )];
+
+  const allRoles = [...new Set([...singleRoles, ...compositeRoles])];
+
+  const userRows = state.data.agrusers;
+  const userAssignedRoles = userRows
+    .filter(r =>
+      (r['UNAME'] || '').trim().toUpperCase() === userId &&
+      allRoles.includes((r['AGR_NAME'] || '').trim())
+    )
+    .map(r => ({
+      role:     (r['AGR_NAME']  || '').trim(),
+      fromDate: (r['FROM_DAT']  || '').trim(),
+      toDate:   (r['TO_DAT']    || '').trim()
+    }));
+
+  const seen = new Set();
+  const uniqueAssigned = userAssignedRoles.filter(r => {
+    if (seen.has(r.role)) return false;
+    seen.add(r.role); return true;
+  });
+
+  if (uniqueAssigned.length === 0) {
+    const singleRows = singleRoles.map(r =>
+      `<tr><td>${r}</td><td><span class="badge badge-green">Single</span></td></tr>`
+    ).join('');
+    const compRows = compositeRoles.map(r =>
+      `<tr><td>${r}</td><td><span class="badge badge-blue">Composite</span></td></tr>`
+    ).join('');
+
+    renderResult('error', '❌ Role Not Assigned',
+      `<p>User <strong>${userId}</strong> does not have access to any of the roles required for the <strong>"${state.tileName}"</strong> tile.</p>
+       <p style="margin-top:10px">Please request one of the following roles to be assigned:</p>
+       <table class="result-table" style="margin-top:10px">
+         <thead><tr><th>Role Name</th><th>Type</th></tr></thead>
+         <tbody>${singleRows}${compRows}</tbody>
+       </table>
+       <ul class="next-steps" style="margin-top:14px">
+         <li>🔧 Raise an access request for one of the roles above via your IT portal.</li>
+         <li>📋 If unsure which role fits your job function, contact your SAP admin.</li>
+       </ul>`
+    );
+  } else {
+    const rows = uniqueAssigned.map(r => {
+      const isComp = compositeRoles.includes(r.role);
+      const badge  = isComp
+        ? '<span class="badge badge-blue">Composite</span>'
+        : '<span class="badge badge-green">Single</span>';
+      return `<tr><td>${r.role}</td><td>${badge}</td><td>${r.fromDate}</td><td>${r.toDate}</td></tr>`;
+    }).join('');
+
+    renderResult('success', '✅ Role Already Assigned',
+      `<p>User <strong>${userId}</strong> already has access to the following role(s) for tile <strong>"${state.tileName}"</strong>:</p>
+       <table class="result-table" style="margin-top:10px">
+         <thead><tr><th>Role Name</th><th>Type</th><th>Valid From</th><th>Valid To</th></tr></thead>
+         <tbody>${rows}</tbody>
+       </table>
+       <p style="margin-top:12px"><strong>Your problem statement does not match the original issue.</strong> Since the role is assigned, consider the following:</p>
+       <ul class="next-steps">
+         <li>🔄 Clear browser cache and reload the Fiori Launchpad (Ctrl+Shift+Del).</li>
+         <li>🔓 Log out completely and log back in to refresh role assignments.</li>
+         <li>⚙️ Ask your Basis team to verify OData service activation for the tile's catalog.</li>
+         <li>🟠 This may be <strong>Problem Statement 2</strong> — tile assigned but not visible. Investigate launchpad configuration.</li>
+       </ul>`
+    );
+  }
+}
+
+// ── PS3 ───────────────────────────────────────────────────────────────────────
+function analyzePS3() {
+  renderResult('info', 'ℹ️ Transaction Missing in Tile',
+    `<p>You reported that tile <strong>"${state.tileName}"</strong> is visible but transaction <strong>"${state.transaction}"</strong> is missing.</p>
+     <p style="margin-top:10px">To investigate this, your SAP admin should:</p>
+     <ul class="next-steps">
+       <li>🔍 Check if transaction <strong>${state.transaction}</strong> is included in the role's authorization objects.</li>
+       <li>📋 Review the role's menu entries in <strong>PFCG</strong> to ensure the transaction is listed.</li>
+       <li>⚙️ Verify the transaction is active and not restricted by organizational levels.</li>
+       <li>🔄 Re-generate the authorization profile if recently modified.</li>
+     </ul>
+     <p style="margin-top:10px" class="form-hint">Full automated analysis for PS3 requires AGR_1251.xlsx data (authorization object level). Ask your admin to upload that file for a deeper investigation.</p>`
+  );
+}
+
+// ── PS4 ───────────────────────────────────────────────────────────────────────
+function analyzePS4() {
+  renderResult('info', 'ℹ️ Authorization Issue',
+    `<p>User <strong>${state.userId}</strong> has access to tile <strong>"${state.tileName}"</strong> but is experiencing an authorization failure.</p>
+     <p style="margin-top:10px">Missing authorization object reported: <strong>${state.auth}</strong></p>
+     <ul class="next-steps" style="margin-top:10px">
+       <li>🔍 Review the SU53 output to identify all missing authorization objects.</li>
+       <li>📋 Ask your SAP admin to add the missing object <strong>${state.auth}</strong> to the user's role in <strong>PFCG</strong>.</li>
+       <li>⚙️ After role update, regenerate the authorization profile and reassign to the user.</li>
+       <li>🔄 Ask the user to log out and back in to pick up the new authorizations.</li>
+     </ul>
+     <p style="margin-top:10px" class="form-hint">Full automated analysis for PS4 requires AGR_1251.xlsx authorization data. Ask your admin to upload that file for a complete role-level authorization check.</p>`
+  );
+}
+
+// ─── Render Result ────────────────────────────────────────────────────────────
+function renderResult(type, title, body) {
+  document.getElementById('result-content').innerHTML =
+    `<div class="result-box ${type}">
+       <div class="result-title">${title}</div>
+       ${body}
+     </div>`;
+}
+
+// ─── Restart ──────────────────────────────────────────────────────────────────
+document.getElementById('btn-restart').addEventListener('click', () => {
+  state.ps = null;
+  state.userId = state.tileName = state.transaction = state.auth = '';
+
+  ['input-userid','input-tile','input-transaction','input-auth'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  ['fname-ps3-screenshot','fname-su53-screenshot'].forEach(id => {
+    const el = document.getElementById(id);
+    el.textContent = ''; el.classList.add('hidden');
+  });
+  ['file-ps3-screenshot','file-su53-screenshot'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  ['preview-ps3-screenshot','preview-su53-screenshot'].forEach(id => {
+    const el = document.getElementById(id);
+    el.src = ''; el.classList.add('hidden');
+  });
+  document.querySelectorAll('.ps-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('btn-ps-next').disabled = true;
+  document.getElementById('result-content').innerHTML = '';
+
+  hide('step-inputs'); hide('step-result');
+  show('step-ps');
+});
+</script>
+
+</body>
+</html>

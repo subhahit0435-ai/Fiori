@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP Fiori Troubleshooter — Admin Setup</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      background: #f7f8fa;
+      color: #1f2328;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    .app-header {
+      max-width: 680px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: #c8372d;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .app-header h1 { font-size: 20px; font-weight: 700; }
+    .app-header p  { color: #57606a; font-size: 13px; margin-top: 3px; }
+
+    .badge-admin {
+      display: inline-block;
+      background: #c8372d;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: .04em;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 28px;
+      max-width: 680px;
+      margin: 0 auto 20px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .section-sub {
+      font-size: 13px;
+      color: #57606a;
+      margin-bottom: 22px;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 480px) { .status-grid { grid-template-columns: 1fr; } }
+
+    .status-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 14px 16px;
+      background: #f7f8fa;
+    }
+    .status-card.loaded  { border-color: #86efac; background: #f0fdf4; }
+    .status-card.missing { border-color: #fca5a5; background: #fef2f2; }
+
+    .status-card .sc-label { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+    .status-card .sc-meta  { font-size: 12px; color: #57606a; }
+    .status-card.loaded  .sc-meta { color: #166534; }
+    .status-card.missing .sc-meta { color: #991b1b; }
+    .sc-icon { font-size: 18px; margin-bottom: 4px; }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #1f2328;
+    }
+    .form-group label .opt { color: #9ca3af; font-weight: 400; }
+
+    .upload-zone {
+      border: 2px dashed #d1d5db;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: border-color .15s, background .15s;
+    }
+    .upload-zone:hover  { border-color: #0f62fe; background: #f0f5ff; }
+    .upload-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-zone .upload-icon { font-size: 26px; margin-bottom: 6px; }
+    .upload-zone p { font-size: 13px; color: #57606a; }
+    .file-name {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #166534;
+    }
+    .hidden { display: none !important; }
+
+    .btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    .btn {
+      padding: 9px 20px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-primary   { background: #0f62fe; color: #fff; }
+    .btn-primary:hover:not(:disabled)   { background: #0353e9; }
+    .btn-secondary { background: #f3f4f6; color: #1f2328; border: 1px solid #d1d5db; }
+    .btn-secondary:hover:not(:disabled) { background: #e9eaec; }
+    .btn-danger    { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    .btn-danger:hover:not(:disabled)    { background: #fecaca; }
+
+    .result-box {
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 13px;
+      margin-top: 16px;
+    }
+    .result-box.error   { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+    .result-box.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+    .result-box.info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a5f; }
+
+    .spinner {
+      width: 18px; height: 18px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #0f62fe;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .user-link-box {
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      background: #eff6ff;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #1e3a5f;
+      margin-top: 0;
+    }
+    .user-link-box a { color: #0f62fe; font-weight: 600; }
+
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 16px;
+      margin-top: 32px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="logo">
+    <div class="logo-icon">SF</div>
+    <div>
+      <h1>SAP Fiori Troubleshooter <span class="badge-admin">ADMIN</span></h1>
+      <p>One-time data setup — upload SAP export files to power the end-user tool.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Current data status -->
+<div class="card">
+  <div class="section-title">Current Data Status</div>
+  <div class="section-sub">Shows what data is currently stored in the browser for end users.</div>
+
+  <div class="status-grid" id="status-grid">
+    <!-- filled by JS -->
+  </div>
+
+  <div class="user-link-box">
+    📎 Share the end-user tool with your team: <a href="index.html">index.html</a> — they will use the data you upload here without needing access to the files.
+  </div>
+
+  <div class="btn-row" style="margin-top: 16px; justify-content: flex-start;">
+    <button class="btn btn-danger" id="btn-clear">🗑 Clear All Stored Data</button>
+  </div>
+</div>
+
+<!-- Upload card -->
+<div class="card">
+  <div class="section-title">Upload / Refresh Data Files</div>
+  <div class="section-sub">Upload the SAP export files below. Data is parsed and stored locally in this browser — nothing is sent to any server. End users on this same device will automatically get the latest data.</div>
+
+  <div class="form-group">
+    <label>FLPCA.xlsx <span style="color:#ef4444">*</span></label>
+    <div class="upload-zone" id="zone-flpca">
+      <input type="file" accept=".xlsx" id="file-flpca" />
+      <div class="upload-icon">📊</div>
+      <p>Click to upload <strong>FLPCA.xlsx</strong></p>
+      <div class="file-name hidden" id="fname-flpca"></div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>AGR_USERS.xlsx <span style="color:#ef4444">*</span></label>
+    <div class="upload-zone" id="zone-agrusers">
+      <input type="file" accept=".xlsx" id="file-agrusers" />
+      <div class="upload-icon">👥</div>
+      <p>Click to upload <strong>AGR_USERS.xlsx</strong></p>
+      <div class="file-name hidden" id="fname-agrusers"></div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>AGR_AGRS.xlsx <span style="color:#ef4444">*</span></label>
+    <div class="upload-zone" id="zone-agragrs">
+      <input type="file" accept=".xlsx" id="file-agragrs" />
+      <div class="upload-icon">🔗</div>
+      <p>Click to upload <strong>AGR_AGRS.xlsx</strong></p>
+      <div class="file-name hidden" id="fname-agragrs"></div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>AGR_1251.xlsx <span class="opt">(optional — required for PS3 &amp; PS4)</span></label>
+    <div class="upload-zone" id="zone-agr1251">
+      <input type="file" accept=".xlsx" id="file-agr1251" />
+      <div class="upload-icon">🔐</div>
+      <p>Click to upload <strong>AGR_1251.xlsx</strong></p>
+      <div class="file-name hidden" id="fname-agr1251"></div>
+    </div>
+  </div>
+
+  <div id="save-msg" class="hidden"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" id="btn-save" disabled>💾 Save to Browser Storage</button>
+  </div>
+</div>
+
+<footer>Made with IBM Bob &nbsp;|&nbsp; SAP Fiori Troubleshooter — Admin Setup &nbsp;|&nbsp; All data processed locally in your browser</footer>
+
+<script src="xlsx.full.min.js"></script>
+<script src="lz-string.min.js"></script>
+<script>
+// ─── Storage keys ─────────────────────────────────────────────────────────────
+const KEYS = {
+  flpca:    'sft_flpca',
+  agrusers: 'sft_agrusers',
+  agragrs:  'sft_agragrs',
+  agr1251:  'sft_agr1251',
+  meta:     'sft_meta'
+};
+
+// ─── Only keep columns actually used by the analysis logic ────────────────────
+const KEEP_COLS = {
+  flpca:    ['Title/Subtitle/Information', 'Role'],
+  agrusers: ['UNAME', 'AGR_NAME', 'FROM_DAT', 'TO_DAT'],
+  agragrs:  ['AGR_NAME', 'CHILD_AGR'],
+  agr1251:  ['AGR_NAME', 'OBJECT', 'FIELD', 'LOW', 'HIGH']
+};
+
+function pruneRows(rows, key) {
+  const cols = KEEP_COLS[key];
+  if (!cols) return rows;
+  return rows.map(r => {
+    const out = {};
+    cols.forEach(c => { if (c in r) out[c] = r[c]; });
+    return out;
+  });
+}
+
+// ─── Compress / decompress helpers ────────────────────────────────────────────
+function store(storageKey, rows) {
+  const json       = JSON.stringify(rows);
+  const compressed = LZString.compressToUTF16(json);
+  localStorage.setItem(storageKey, compressed);
+}
+
+const FILE_LABELS = {
+  flpca:    'FLPCA.xlsx',
+  agrusers: 'AGR_USERS.xlsx',
+  agragrs:  'AGR_AGRS.xlsx',
+  agr1251:  'AGR_1251.xlsx (optional)'
+};
+
+// Pending in-memory parsed rows (before Save)
+const pending = { flpca: null, agrusers: null, agragrs: null, agr1251: null };
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function readWorkbook(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        resolve(XLSX.utils.sheet_to_json(ws, { defval: '' }));
+      } catch(err) { reject(err); }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function getMeta() {
+  try { return JSON.parse(localStorage.getItem(KEYS.meta) || '{}'); } catch { return {}; }
+}
+
+function hasData(key) {
+  try { return !!localStorage.getItem(KEYS[key]); } catch { return false; }
+}
+
+// ─── Render status cards ───────────────────────────────────────────────────────
+function renderStatus() {
+  const meta = getMeta();
+  const grid = document.getElementById('status-grid');
+  grid.innerHTML = Object.keys(FILE_LABELS).map(key => {
+    const stored  = hasData(key);
+    const cls     = stored ? 'loaded' : 'missing';
+    const icon    = stored ? '✅' : '❌';
+    const metaMsg = stored && meta[key]
+      ? `Loaded ${meta[key].rows} rows on ${meta[key].date}`
+      : stored ? 'Stored' : 'Not uploaded yet';
+    return `
+      <div class="status-card ${cls}">
+        <div class="sc-icon">${icon}</div>
+        <div class="sc-label">${FILE_LABELS[key]}</div>
+        <div class="sc-meta">${metaMsg}</div>
+      </div>`;
+  }).join('');
+}
+
+renderStatus();
+
+// ─── Upload zones ─────────────────────────────────────────────────────────────
+function setupZone(inputId, fnameId, key) {
+  document.getElementById(inputId).addEventListener('change', async function () {
+    const file = this.files[0];
+    if (!file) return;
+    const fnEl = document.getElementById(fnameId);
+    fnEl.textContent = '⏳ Reading…';
+    fnEl.classList.remove('hidden');
+    try {
+      const rows = await readWorkbook(file);
+      pending[key] = { rows, fileName: file.name, count: rows.length };
+      fnEl.textContent = `✅ ${file.name}  (${rows.length} rows)`;
+      checkSaveReady();
+    } catch(e) {
+      fnEl.textContent = `❌ Failed: ${e.message}`;
+    }
+  });
+}
+
+setupZone('file-flpca',    'fname-flpca',    'flpca');
+setupZone('file-agrusers', 'fname-agrusers', 'agrusers');
+setupZone('file-agragrs',  'fname-agragrs',  'agragrs');
+setupZone('file-agr1251',  'fname-agr1251',  'agr1251');
+
+function checkSaveReady() {
+  const ready = pending.flpca && pending.agrusers && pending.agragrs;
+  document.getElementById('btn-save').disabled = !ready;
+}
+
+// ─── Save ─────────────────────────────────────────────────────────────────────
+document.getElementById('btn-save').addEventListener('click', () => {
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Saving…';
+
+  const msgEl = document.getElementById('save-msg');
+  msgEl.className = 'hidden';
+
+  try {
+    const meta = getMeta();
+    const now  = new Date().toLocaleString();
+
+    ['flpca', 'agrusers', 'agragrs'].forEach(key => {
+      if (pending[key]) {
+        store(KEYS[key], pruneRows(pending[key].rows, key));
+        meta[key] = { rows: pending[key].count, date: now, file: pending[key].fileName };
+      }
+    });
+
+    // agr1251 is optional — only save if provided
+    if (pending.agr1251) {
+      store(KEYS.agr1251, pruneRows(pending.agr1251.rows, 'agr1251'));
+      meta.agr1251 = { rows: pending.agr1251.count, date: now, file: pending.agr1251.fileName };
+    }
+
+    localStorage.setItem(KEYS.meta, JSON.stringify(meta));
+
+    msgEl.className = 'result-box success';
+    msgEl.textContent = '✅ Data saved successfully. End users can now use the tool via index.html.';
+    msgEl.classList.remove('hidden');
+    renderStatus();
+  } catch(e) {
+    msgEl.className = 'result-box error';
+    msgEl.textContent = '❌ Save failed: ' + e.message + '. localStorage may be full or disabled.';
+    msgEl.classList.remove('hidden');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '💾 Save to Browser Storage';
+});
+
+// ─── Clear ─────────────────────────────────────────────────────────────────────
+document.getElementById('btn-clear').addEventListener('click', () => {
+  if (!confirm('Clear all stored SAP data? End users will see a "no data" message until you upload again.')) return;
+  Object.values(KEYS).forEach(k => localStorage.removeItem(k));
+  renderStatus();
+  const msgEl = document.getElementById('save-msg');
+  msgEl.className = 'result-box info';
+  msgEl.textContent = 'All stored data cleared. Upload files and save again to restore.';
+  msgEl.classList.remove('hidden');
+});
+</script>
+</body>
+</html>
