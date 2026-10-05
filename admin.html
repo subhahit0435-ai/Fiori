@@ -60,16 +60,8 @@
       margin: 0 auto 20px;
     }
 
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .section-sub {
-      font-size: 13px;
-      color: #57606a;
-      margin-bottom: 22px;
-    }
+    .section-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .section-sub   { font-size: 13px; color: #57606a; margin-bottom: 22px; }
 
     .status-grid {
       display: grid;
@@ -104,6 +96,19 @@
     }
     .form-group label .opt { color: #9ca3af; font-weight: 400; }
 
+    .form-group input[type="text"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #1f2328;
+      background: #fff;
+      transition: border-color .15s;
+    }
+    .form-group input:focus { outline: 2px solid #0f62fe; border-color: transparent; }
+
     .upload-zone {
       border: 2px dashed #d1d5db;
       border-radius: 8px;
@@ -127,7 +132,7 @@
     }
     .hidden { display: none !important; }
 
-    .btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    .btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; flex-wrap: wrap; }
     .btn {
       padding: 9px 20px;
       border-radius: 6px;
@@ -154,6 +159,7 @@
     .result-box.error   { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
     .result-box.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
     .result-box.info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a5f; }
+    .result-box.warning { background: #fffbeb; border: 1px solid #fde68a; color: #713f12; }
 
     .spinner {
       width: 18px; height: 18px;
@@ -178,6 +184,66 @@
     }
     .user-link-box a { color: #0f62fe; font-weight: 600; }
 
+    .gist-id-display {
+      font-family: 'Consolas', 'Menlo', monospace;
+      font-size: 12px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 5px;
+      padding: 7px 10px;
+      word-break: break-all;
+      color: #374151;
+      margin-top: 6px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      background: #0f62fe;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .info-callout {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid #f59e0b;
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #713f12;
+      margin-bottom: 18px;
+    }
+    .info-callout ul { margin-top: 6px; padding-left: 18px; }
+    .info-callout li { margin-bottom: 4px; }
+
+    .share-box {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #14532d;
+    }
+    .share-box strong { display: block; margin-bottom: 6px; }
+    .share-box .gist-share-id {
+      font-family: monospace;
+      font-size: 12px;
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      border-radius: 4px;
+      padding: 6px 10px;
+      word-break: break-all;
+      margin-top: 6px;
+    }
+
     .divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
 
     footer {
@@ -200,22 +266,79 @@
     <div class="logo-icon">SF</div>
     <div>
       <h1>SAP Fiori Troubleshooter <span class="badge-admin">ADMIN</span></h1>
-      <p>One-time data setup — upload SAP export files to power the end-user tool.</p>
+      <p>One-time data setup — upload SAP export files and publish to shared cloud storage.</p>
     </div>
   </div>
 </div>
 
-<!-- Current data status -->
+<!-- ── STEP 1 — GitHub Gist setup ─────────────────────────────────────────── -->
+<div class="card" id="card-gist-setup">
+  <div class="section-title"><span class="step-badge">1</span>GitHub Gist — Shared Storage Setup</div>
+  <div class="section-sub">
+    Configure two private GitHub Gists as the shared repository. All end users will read SAP data from the same Gist regardless of which machine they use.
+  </div>
+
+  <div class="info-callout">
+    <strong>⚠️ First-time setup instructions</strong>
+    <ul>
+      <li>Create a GitHub account (free) at <strong>github.com</strong> if you don't have one.</li>
+      <li>Go to <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong>.</li>
+      <li>Create <strong>two PATs</strong>: one <em>Admin PAT</em> (full gist read+write) and one <em>Audit PAT</em> (gist read+write, for end users to append audit entries).</li>
+      <li>Scope: select <strong>Gists: read and write</strong> for both. Set expiry to at least 1 year.</li>
+      <li>The Admin PAT is only stored in your browser session tab — it is cleared when you close the tab.</li>
+      <li>The Audit PAT is stored in the shared Gist config so end users can write audit entries without needing GitHub accounts.</li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Admin GitHub PAT <span style="color:#ef4444">*</span>
+      <span class="opt">(session only — never persisted to disk)</span>
+    </label>
+    <input type="password" id="input-admin-pat"
+           placeholder="github_pat_…"
+           autocomplete="off" spellcheck="false" />
+  </div>
+
+  <div class="form-group">
+    <label>Audit GitHub PAT <span style="color:#ef4444">*</span>
+      <span class="opt">(stored in shared config — use a fine-grained read+write gist scope PAT)</span>
+    </label>
+    <input type="password" id="input-audit-pat"
+           placeholder="github_pat_…"
+           autocomplete="off" spellcheck="false" />
+  </div>
+
+  <div id="gist-ids-display" class="hidden">
+    <div class="section-title" style="font-size:14px; margin-bottom:8px;">Provisioned Gist IDs</div>
+    <div style="margin-bottom:6px; font-size:13px; color:#374151;">Data Gist ID:</div>
+    <div class="gist-id-display" id="disp-data-gist-id"></div>
+    <div style="margin: 10px 0 6px; font-size:13px; color:#374151;">Audit Gist ID:</div>
+    <div class="gist-id-display" id="disp-audit-gist-id"></div>
+  </div>
+
+  <div id="gist-setup-msg" class="hidden"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" id="btn-load-existing">🔄 Load Existing Config</button>
+    <button class="btn btn-primary"   id="btn-provision-gists">☁ Provision Gists →</button>
+  </div>
+</div>
+
+<!-- ── STEP 2 — Current data status ───────────────────────────────────────── -->
 <div class="card">
-  <div class="section-title">Current Data Status</div>
-  <div class="section-sub">Shows what data is currently stored in the browser for end users.</div>
+  <div class="section-title"><span class="step-badge">2</span>Current Data Status</div>
+  <div class="section-sub">Shows what SAP data is currently stored in shared Gist storage.</div>
 
   <div class="status-grid" id="status-grid">
     <!-- filled by JS -->
   </div>
 
-  <div class="user-link-box">
-    📎 Share the end-user tool with your team: <a href="index.html">index.html</a> — they will use the data you upload here without needing access to the files.
+  <div class="user-link-box" id="share-instructions">
+    📎 Share the end-user tool with your team. They need two things:
+    <ol style="margin-top:8px; padding-left:20px; line-height:2;">
+      <li>The <strong>index.html</strong> file (or host it on a web server / GitHub Pages).</li>
+      <li>The <strong>Data Gist ID</strong> shown above — they paste it once on first launch.</li>
+    </ol>
   </div>
 
   <div class="btn-row" style="margin-top: 16px; justify-content: flex-start;">
@@ -223,10 +346,13 @@
   </div>
 </div>
 
-<!-- Upload card -->
+<!-- ── STEP 3 — Upload / Refresh data files ───────────────────────────────── -->
 <div class="card">
-  <div class="section-title">Upload / Refresh Data Files</div>
-  <div class="section-sub">Upload the SAP export files below. Data is parsed and stored locally in this browser — nothing is sent to any server. End users on this same device will automatically get the latest data.</div>
+  <div class="section-title"><span class="step-badge">3</span>Upload / Refresh Data Files</div>
+  <div class="section-sub">
+    Upload SAP export files. Data is parsed, compressed, and published to the shared GitHub Gist.
+    End users on <em>any device</em> will automatically fetch the latest data.
+  </div>
 
   <div class="form-group">
     <label>FLPCA.xlsx <span style="color:#ef4444">*</span></label>
@@ -259,7 +385,7 @@
   </div>
 
   <div class="form-group">
-    <label>AGR_1251.xlsx <span class="opt">(optional — required for PS3 &amp; PS4)</span></label>
+    <label>AGR_1251.xlsx <span class="opt">(optional — required for PS3)</span></label>
     <div class="upload-zone" id="zone-agr1251">
       <input type="file" accept=".xlsx" id="file-agr1251" />
       <div class="upload-icon">🔐</div>
@@ -271,16 +397,31 @@
   <div id="save-msg" class="hidden"></div>
 
   <div class="btn-row">
-    <button class="btn btn-primary" id="btn-save" disabled>💾 Save to Browser Storage</button>
+    <button class="btn btn-secondary" id="btn-save-local" disabled>💾 Save Locally Only</button>
+    <button class="btn btn-primary"   id="btn-save" disabled>☁ Save &amp; Publish to Gist →</button>
   </div>
 </div>
 
-<footer>Made with IBM Bob &nbsp;|&nbsp; SAP Fiori Troubleshooter — Admin Setup &nbsp;|&nbsp; All data processed locally in your browser</footer>
+<!-- ── Share box — shown after first successful publish ───────────────────── -->
+<div class="card hidden" id="card-share">
+  <div class="section-title">✅ Published — Share with End Users</div>
+  <div class="section-sub">Data is live. Share the Data Gist ID with your team. They paste it once in the user tool.</div>
+  <div class="share-box">
+    <strong>📋 Data Gist ID (give this to end users):</strong>
+    <div class="gist-share-id" id="share-gist-id"></div>
+  </div>
+  <div style="margin-top:14px; font-size:13px; color:#57606a;">
+    Users open <strong>index.html</strong>, are prompted for this ID on first launch, and from then on the data loads automatically from the shared Gist on every device.
+  </div>
+</div>
+
+<footer>Made with IBM Bob &nbsp;|&nbsp; SAP Fiori Troubleshooter — Admin Setup &nbsp;|&nbsp; All data processed locally in your browser &nbsp;|&nbsp; <a href="repository.html" style="color:#0f62fe; font-weight:600;">📋 Audit Repository</a></footer>
 
 <script src="xlsx.full.min.js"></script>
 <script src="lz-string.min.js"></script>
+<script src="gist-storage.js"></script>
 <script>
-// ─── Storage keys ─────────────────────────────────────────────────────────────
+// ─── Storage keys (localStorage — fallback / local mode) ─────────────────────
 const KEYS = {
   flpca:    'sft_flpca',
   agrusers: 'sft_agrusers',
@@ -289,25 +430,103 @@ const KEYS = {
   meta:     'sft_meta'
 };
 
-// ─── Only keep columns actually used by the analysis logic ────────────────────
-const KEEP_COLS = {
-  flpca:    ['Title/Subtitle/Information', 'Role'],
-  agrusers: ['UNAME', 'AGR_NAME', 'FROM_DAT', 'TO_DAT'],
-  agragrs:  ['AGR_NAME', 'CHILD_AGR'],
-  agr1251:  ['AGR_NAME', 'OBJECT', 'FIELD', 'LOW', 'HIGH']
-};
+// ─── Audit Repository (admin events) ─────────────────────────────────────────
+const AUDIT_KEY     = 'sft_audit_log';
+const AUDIT_MAX     = 5000;
+const AUDIT_SESSION = (function(){
+  let s = sessionStorage.getItem('sft_session_id');
+  if (!s) { s = crypto.randomUUID(); sessionStorage.setItem('sft_session_id', s); }
+  return s;
+})();
 
-function pruneRows(rows, key) {
-  const cols = KEEP_COLS[key];
-  if (!cols) return rows;
-  return rows.map(r => {
-    const out = {};
-    cols.forEach(c => { if (c in r) out[c] = r[c]; });
-    return out;
-  });
+function _djb2(str) {
+  let h = 5381;
+  for (let i = 0; i < str.length; i++) h = (((h << 5) + h) + str.charCodeAt(i)) >>> 0;
+  return h.toString(16);
 }
 
-// ─── Compress / decompress helpers ────────────────────────────────────────────
+function _auditLoadLog() {
+  try {
+    const raw = localStorage.getItem(AUDIT_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch { return []; }
+}
+
+function _auditSaveLog(entries) {
+  try { localStorage.setItem(AUDIT_KEY, JSON.stringify(entries)); } catch { /* storage full */ }
+}
+
+function auditLogLocal(entry) {
+  const id  = crypto.randomUUID();
+  const ts  = new Date().toISOString();
+  const rec = Object.assign({ id, ts, sessionId: AUDIT_SESSION }, entry);
+  rec.checksum = _djb2(id + ts + (rec.eventType || ''));
+  const log = _auditLoadLog();
+  log.push(rec);
+  if (log.length > AUDIT_MAX) log.splice(0, log.length - AUDIT_MAX);
+  _auditSaveLog(log);
+  return rec; // return so caller can also push to Gist
+}
+
+// Append audit to Gist (fire-and-forget)
+async function auditLogGist(entry) {
+  const rec  = auditLogLocal(entry);
+  const cfg  = GistStorage.loadConfig();
+  if (!cfg.auditGistId || !cfg.auditPAT) return; // Gist not set up yet
+  try {
+    await GistStorage.appendAuditEntry(cfg.auditGistId, cfg.auditPAT, rec);
+  } catch (e) {
+    console.warn('Gist audit append failed (non-fatal):', e.message);
+  }
+}
+
+// ─── Column normalizers and keep lists ───────────────────────────────────────
+function normalizeRow(row, key) {
+  const r = row || {};
+  if (key === 'agrusers') {
+    return {
+      UNAME:    (r['UNAME'] || r['User Name'] || r['USER_NAME'] || r['BNAME'] || '').toString().trim(),
+      AGR_NAME: (r['AGR_NAME'] || r['Role'] || r['ROLE'] || r['AGR_NAME'] || '').toString().trim(),
+      FROM_DAT: (r['FROM_DAT'] || r['Start date'] || r['FROM_DATE'] || '').toString().trim(),
+      TO_DAT:   (r['TO_DAT']   || r['End date']   || r['TO_DATE']   || '').toString().trim()
+    };
+  }
+  if (key === 'agragrs') {
+    return {
+      AGR_NAME:  (r['AGR_NAME'] || r['Composite role'] || r['COMPOSITE_ROLE'] || '').toString().trim(),
+      CHILD_AGR: (r['CHILD_AGR'] || r['Role'] || r['SINGLE_ROLE'] || r['CHILD_ROLE'] || '').toString().trim()
+    };
+  }
+  if (key === 'agr1251') {
+    return {
+      AGR_NAME: (r['AGR_NAME'] || r['Role'] || r['ROLE'] || '').toString().trim(),
+      OBJECT:   (r['OBJECT'] || r['Authorization object'] || r['AUTH_OBJECT'] || '').toString().trim(),
+      FIELD:    (r['FIELD'] || r['Field name'] || r['FIELD_NAME'] || '').toString().trim(),
+      LOW:      (r['LOW'] || r['Authorization value'] || r['AUTH_VALUE'] || r['VAL_LOW'] || '').toString().trim(),
+      HIGH:     (r['HIGH'] || r['Authorization value_1'] || r['VAL_HIGH'] || '').toString().trim()
+    };
+  }
+  if (key === 'flpca') {
+    return {
+      'Role':                                (r['Role'] || r['AGR_NAME'] || '').toString().trim(),
+      'Title/Subtitle/Information':          (r['Title/Subtitle/Information'] || r['Tile Title'] || r['Target Mapping Title'] || '').toString().trim(),
+      'Tile / Target Mapping Matching Text': (r['Tile / Target Mapping Matching Text'] || '').toString().trim(),
+      'Semantic Object':                     (r['Semantic Object'] || r['SEMANTIC_OBJECT'] || '').toString().trim(),
+      'Action':                              (r['Action'] || r['ACTION'] || '').toString().trim(),
+      'Application Ressource':               (r['Application Ressource'] || r['Application Resource'] || r['Transaction'] || '').toString().trim()
+    };
+  }
+  return r;
+}
+
+function pruneRows(rows, key) {
+  if (!Array.isArray(rows)) return [];
+  return rows.map(r => normalizeRow(r, key));
+}
+
+// ─── Compress / decompress helpers ───────────────────────────────────────────
 function store(storageKey, rows) {
   const json       = JSON.stringify(rows);
   const compressed = LZString.compressToUTF16(json);
@@ -324,7 +543,7 @@ const FILE_LABELS = {
 // Pending in-memory parsed rows (before Save)
 const pending = { flpca: null, agrusers: null, agragrs: null, agr1251: null };
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 function readWorkbook(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -348,10 +567,37 @@ function hasData(key) {
   try { return !!localStorage.getItem(KEYS[key]); } catch { return false; }
 }
 
-// ─── Render status cards ───────────────────────────────────────────────────────
+// ─── Gist config display helpers ─────────────────────────────────────────────
+function refreshGistDisplay() {
+  const cfg = GistStorage.loadConfig();
+  if (cfg.dataGistId && cfg.auditGistId) {
+    document.getElementById('disp-data-gist-id').textContent  = cfg.dataGistId;
+    document.getElementById('disp-audit-gist-id').textContent = cfg.auditGistId;
+    document.getElementById('gist-ids-display').classList.remove('hidden');
+  }
+}
+
+function showGistMsg(type, html) {
+  const el = document.getElementById('gist-setup-msg');
+  el.className = 'result-box ' + type;
+  el.innerHTML = html;
+  el.classList.remove('hidden');
+}
+
+// ─── Render status cards ──────────────────────────────────────────────────────
 function renderStatus() {
   const meta = getMeta();
+  const cfg  = GistStorage.loadConfig();
   const grid = document.getElementById('status-grid');
+
+  const gistStatus = cfg.dataGistId
+    ? `<div style="margin-top:10px; padding:8px 12px; background:#f0fdf4; border:1px solid #86efac; border-radius:6px; font-size:12px; color:#166534;">
+         ☁ Shared Gist: <strong>${cfg.dataGistId}</strong>
+       </div>`
+    : `<div style="margin-top:10px; padding:8px 12px; background:#fffbeb; border:1px solid #fde68a; border-radius:6px; font-size:12px; color:#713f12;">
+         ⚠️ Shared Gist not configured — data is local-only.
+       </div>`;
+
   grid.innerHTML = Object.keys(FILE_LABELS).map(key => {
     const stored  = hasData(key);
     const cls     = stored ? 'loaded' : 'missing';
@@ -365,10 +611,66 @@ function renderStatus() {
         <div class="sc-label">${FILE_LABELS[key]}</div>
         <div class="sc-meta">${metaMsg}</div>
       </div>`;
-  }).join('');
+  }).join('') + `<div style="grid-column:1/-1">${gistStatus}</div>`;
 }
 
+refreshGistDisplay();
 renderStatus();
+
+// ─── Step 1: Gist Provisioning ───────────────────────────────────────────────
+document.getElementById('btn-provision-gists').addEventListener('click', async () => {
+  const adminPAT = document.getElementById('input-admin-pat').value.trim();
+  const auditPAT = document.getElementById('input-audit-pat').value.trim();
+
+  if (!adminPAT || !auditPAT) {
+    showGistMsg('error', '❌ Both Admin PAT and Audit PAT are required.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-provision-gists');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Provisioning…';
+  showGistMsg('info', '⏳ Connecting to GitHub…');
+
+  try {
+    const { dataGistId, auditGistId } = await GistStorage.adminProvision(adminPAT);
+
+    // Persist audit PAT into the shared config file so end users can append audit entries
+    const cfg = GistStorage.loadConfig();
+    cfg.auditGistId = auditGistId;
+    cfg.auditPAT    = auditPAT;
+    GistStorage.saveConfig(cfg);
+
+    // Write audit config into the data Gist so index.html can fetch it
+    await GistStorage.adminWriteConfig({ auditGistId, auditPAT });
+
+    refreshGistDisplay();
+    renderStatus();
+    showGistMsg('success',
+      `✅ Gists provisioned successfully.<br>
+       <strong>Data Gist ID:</strong> ${dataGistId}<br>
+       <strong>Audit Gist ID:</strong> ${auditGistId}<br><br>
+       Proceed to Step 3 — upload your SAP files and publish.`
+    );
+  } catch(e) {
+    showGistMsg('error', '❌ Provisioning failed: ' + e.message +
+      '<br><small>Check that your Admin PAT has the <strong>gist</strong> scope and is valid.</small>');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '☁ Provision Gists →';
+});
+
+// Load existing config (for returning admins who already provisioned)
+document.getElementById('btn-load-existing').addEventListener('click', () => {
+  refreshGistDisplay();
+  const cfg = GistStorage.loadConfig();
+  if (cfg.dataGistId) {
+    showGistMsg('success', `✅ Existing config loaded. Data Gist: <strong>${cfg.dataGistId}</strong> — enter your Admin PAT above then proceed to upload.`);
+  } else {
+    showGistMsg('warning', '⚠️ No existing Gist config found in this browser. Complete the provisioning step above.');
+  }
+});
 
 // ─── Upload zones ─────────────────────────────────────────────────────────────
 function setupZone(inputId, fnameId, key) {
@@ -396,59 +698,141 @@ setupZone('file-agr1251',  'fname-agr1251',  'agr1251');
 
 function checkSaveReady() {
   const ready = pending.flpca && pending.agrusers && pending.agragrs;
-  document.getElementById('btn-save').disabled = !ready;
+  document.getElementById('btn-save').disabled       = !ready;
+  document.getElementById('btn-save-local').disabled = !ready;
 }
 
-// ─── Save ─────────────────────────────────────────────────────────────────────
-document.getElementById('btn-save').addEventListener('click', () => {
-  const btn = document.getElementById('btn-save');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Saving…';
+// ─── Helper: commit data to localStorage ─────────────────────────────────────
+function commitToLocalStorage() {
+  const meta = getMeta();
+  const now  = new Date().toLocaleString();
+  const filesUploaded = [];
 
-  const msgEl = document.getElementById('save-msg');
+  ['flpca', 'agrusers', 'agragrs'].forEach(key => {
+    if (pending[key]) {
+      store(KEYS[key], pruneRows(pending[key].rows, key));
+      meta[key] = { rows: pending[key].count, date: now, file: pending[key].fileName };
+      filesUploaded.push({ key, fileName: pending[key].fileName, rowCount: pending[key].count });
+    }
+  });
+
+  if (pending.agr1251) {
+    store(KEYS.agr1251, pruneRows(pending.agr1251.rows, 'agr1251'));
+    meta.agr1251 = { rows: pending.agr1251.count, date: now, file: pending.agr1251.fileName };
+    filesUploaded.push({ key: 'agr1251', fileName: pending.agr1251.fileName, rowCount: pending.agr1251.count });
+  }
+
+  localStorage.setItem(KEYS.meta, JSON.stringify(meta));
+  return { meta, now, filesUploaded };
+}
+
+// ─── Helper: build Gist data payload ─────────────────────────────────────────
+function buildGistPayload(meta, now) {
+  const payload = { _meta: meta, _published: now };
+  ['flpca', 'agrusers', 'agragrs'].forEach(key => {
+    if (pending[key]) payload[key] = pruneRows(pending[key].rows, key);
+  });
+  if (pending.agr1251) payload.agr1251 = pruneRows(pending.agr1251.rows, 'agr1251');
+  return payload;
+}
+
+// ─── Save & Publish to Gist ───────────────────────────────────────────────────
+document.getElementById('btn-save').addEventListener('click', async () => {
+  const btn    = document.getElementById('btn-save');
+  const msgEl  = document.getElementById('save-msg');
+  const adminPAT = GistStorage.getAdminPAT()
+    || document.getElementById('input-admin-pat').value.trim();
+
+  if (!adminPAT) {
+    msgEl.className = 'result-box error';
+    msgEl.innerHTML = '❌ Admin PAT is required to publish. Enter it in Step 1 (it\'s session-only — it won\'t be saved).';
+    msgEl.classList.remove('hidden');
+    return;
+  }
+
+  const cfg = GistStorage.loadConfig();
+  if (!cfg.dataGistId) {
+    msgEl.className = 'result-box error';
+    msgEl.innerHTML = '❌ Gist not provisioned. Complete Step 1 first.';
+    msgEl.classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Saving & Publishing…';
   msgEl.className = 'hidden';
 
   try {
-    const meta = getMeta();
-    const now  = new Date().toLocaleString();
+    const { meta, now, filesUploaded } = commitToLocalStorage();
 
-    ['flpca', 'agrusers', 'agragrs'].forEach(key => {
-      if (pending[key]) {
-        store(KEYS[key], pruneRows(pending[key].rows, key));
-        meta[key] = { rows: pending[key].count, date: now, file: pending[key].fileName };
-      }
+    // Build and push data payload to Gist
+    const payload = buildGistPayload(meta, now);
+    GistStorage.setAdminPAT(adminPAT);
+    await GistStorage.adminWriteData(payload);
+
+    // Also write config file (in case it was reset)
+    await GistStorage.adminWriteConfig({
+      auditGistId: cfg.auditGistId,
+      auditPAT:    cfg.auditPAT
     });
 
-    // agr1251 is optional — only save if provided
-    if (pending.agr1251) {
-      store(KEYS.agr1251, pruneRows(pending.agr1251.rows, 'agr1251'));
-      meta.agr1251 = { rows: pending.agr1251.count, date: now, file: pending.agr1251.fileName };
-    }
-
-    localStorage.setItem(KEYS.meta, JSON.stringify(meta));
+    // Audit
+    await auditLogGist({ eventType: 'ADMIN_UPLOAD', filesUploaded, target: 'gist' });
 
     msgEl.className = 'result-box success';
-    msgEl.textContent = '✅ Data saved successfully. End users can now use the tool via index.html.';
+    msgEl.innerHTML = `✅ Data saved locally and published to shared Gist.
+      End users can now access the data from any device using Gist ID:
+      <strong style="display:block;margin-top:6px;font-family:monospace">${cfg.dataGistId}</strong>`;
     msgEl.classList.remove('hidden');
+
+    // Show share card
+    document.getElementById('share-gist-id').textContent = cfg.dataGistId;
+    document.getElementById('card-share').classList.remove('hidden');
+
     renderStatus();
   } catch(e) {
     msgEl.className = 'result-box error';
-    msgEl.textContent = '❌ Save failed: ' + e.message + '. localStorage may be full or disabled.';
+    msgEl.innerHTML = '❌ Publish failed: ' + e.message;
     msgEl.classList.remove('hidden');
   }
 
   btn.disabled = false;
-  btn.innerHTML = '💾 Save to Browser Storage';
+  btn.innerHTML = '☁ Save &amp; Publish to Gist →';
 });
 
-// ─── Clear ─────────────────────────────────────────────────────────────────────
-document.getElementById('btn-clear').addEventListener('click', () => {
-  if (!confirm('Clear all stored SAP data? End users will see a "no data" message until you upload again.')) return;
+// ─── Save locally only ────────────────────────────────────────────────────────
+document.getElementById('btn-save-local').addEventListener('click', async () => {
+  const msgEl = document.getElementById('save-msg');
+  msgEl.className = 'hidden';
+
+  try {
+    const { filesUploaded } = commitToLocalStorage();
+    await auditLogGist({ eventType: 'ADMIN_UPLOAD', filesUploaded, target: 'local' });
+
+    msgEl.className = 'result-box info';
+    msgEl.textContent = '💾 Data saved to this browser only. Use "Save & Publish to Gist" to share with other users.';
+    msgEl.classList.remove('hidden');
+    renderStatus();
+  } catch(e) {
+    msgEl.className = 'result-box error';
+    msgEl.textContent = '❌ Save failed: ' + e.message + '. localStorage may be full.';
+    msgEl.classList.remove('hidden');
+  }
+});
+
+// ─── Clear ───────────────────────────────────────────────────────────────────
+document.getElementById('btn-clear').addEventListener('click', async () => {
+  const cfg = GistStorage.loadConfig();
+  const gistNote = cfg.dataGistId
+    ? ' The shared Gist still contains the old data — upload and re-publish to overwrite it.'
+    : '';
+  if (!confirm('Clear all stored SAP data from this browser?' + gistNote + '\n\nEnd users connected via Gist will keep receiving the last published data until you re-publish.')) return;
   Object.values(KEYS).forEach(k => localStorage.removeItem(k));
+  await auditLogGist({ eventType: 'ADMIN_CLEAR' });
   renderStatus();
   const msgEl = document.getElementById('save-msg');
   msgEl.className = 'result-box info';
-  msgEl.textContent = 'All stored data cleared. Upload files and save again to restore.';
+  msgEl.textContent = 'Local data cleared.' + (cfg.dataGistId ? ' Upload files and re-publish to update the shared Gist.' : ' Upload files and publish again to restore.');
   msgEl.classList.remove('hidden');
 });
 </script>

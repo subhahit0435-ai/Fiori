@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- CSP: allow github.com API for Gist reads; all other content from self only -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.github.com https://gist.githubusercontent.com; object-src 'none';" />
+  <title>SAP Fiori Troubleshooter — Audit Repository</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      background: #f7f8fa;
+      color: #1f2328;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    .app-header {
+      max-width: 900px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: #1d4ed8;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .app-header h1 { font-size: 20px; font-weight: 700; }
+    .app-header p  { color: #57606a; font-size: 13px; margin-top: 3px; }
+
+    .badge-repo {
+      display: inline-block;
+      background: #1d4ed8;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: .04em;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 24px 28px;
+      max-width: 900px;
+      margin: 0 auto 20px;
+    }
+
+    .section-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .section-sub   { font-size: 13px; color: #57606a; margin-bottom: 18px; }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-chip {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px 16px;
+      min-width: 130px;
+    }
+    .stat-chip .sc-val  { font-size: 22px; font-weight: 700; color: #1d4ed8; }
+    .stat-chip .sc-lbl  { font-size: 12px; color: #57606a; margin-top: 2px; }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      align-items: flex-end;
+    }
+    .filter-bar label { font-size: 12px; font-weight: 600; color: #374151; display: block; margin-bottom: 4px; }
+    .filter-bar input,
+    .filter-bar select {
+      padding: 7px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      background: #fff;
+      color: #1f2328;
+      min-width: 140px;
+    }
+    .filter-bar input:focus,
+    .filter-bar select:focus { outline: 2px solid #1d4ed8; border-color: transparent; }
+
+    /* ── Buttons ── */
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-primary   { background: #0f62fe; color: #fff; }
+    .btn-primary:hover:not(:disabled)   { background: #0353e9; }
+    .btn-secondary { background: #f3f4f6; color: #1f2328; border: 1px solid #d1d5db; }
+    .btn-secondary:hover:not(:disabled) { background: #e9eaec; }
+    .btn-danger    { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    .btn-danger:hover:not(:disabled)    { background: #fecaca; }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; }
+    table.log-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    table.log-table th {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      padding: 9px 10px;
+      text-align: left;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    table.log-table td {
+      padding: 8px 10px;
+      border: 1px solid #e9eaec;
+      vertical-align: top;
+    }
+    table.log-table tr:nth-child(even) td { background: #fafafa; }
+    table.log-table tr:hover td          { background: #eff6ff; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .badge-green  { background: #dcfce7; color: #166534; }
+    .badge-red    { background: #fee2e2; color: #991b1b; }
+    .badge-blue   { background: #dbeafe; color: #1e40af; }
+    .badge-yellow { background: #fef9c3; color: #854d0e; }
+    .badge-gray   { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+
+    /* ── Detail panel (expandable) ── */
+    .detail-btn {
+      background: none; border: none; cursor: pointer;
+      color: #0f62fe; font-size: 12px; font-weight: 600;
+      padding: 0; text-decoration: underline;
+    }
+    .detail-panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 12px;
+      margin-top: 6px;
+      color: #374151;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+    .empty-state .es-icon { font-size: 40px; margin-bottom: 12px; }
+
+    .result-box {
+      border-radius: 8px; padding: 12px 16px;
+      font-size: 13px; margin-top: 12px;
+    }
+    .result-box.info  { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a5f; }
+    .result-box.error { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+
+    .hidden { display: none !important; }
+
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 18px 0; }
+
+    footer {
+      text-align: center; font-size: 12px; color: #9ca3af;
+      border-top: 1px solid #e5e7eb; padding-top: 16px;
+      margin-top: 32px; max-width: 900px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    @media (max-width: 600px) {
+      .stats-bar { gap: 8px; }
+      .stat-chip { min-width: 100px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="logo-icon">SF</div>
+  <div>
+    <h1>SAP Fiori Troubleshooter <span class="badge-repo">AUDIT REPOSITORY</span></h1>
+    <p>Immutable log of all analysis runs, admin uploads, and data events — for audit and future reference.</p>
+  </div>
+</div>
+
+<!-- Source selector -->
+<div class="card">
+  <div class="section-title">Data Source</div>
+  <div class="section-sub">Choose whether to view the log from this browser only or fetch the complete shared log from the GitHub Gist.</div>
+  <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+    <button class="btn btn-primary"   id="btn-source-gist">☁ Load Shared Gist Log</button>
+    <button class="btn btn-secondary" id="btn-source-local">💻 This Browser Only</button>
+    <span id="source-indicator" style="font-size:12px; color:#57606a;"></span>
+  </div>
+  <div id="source-msg" class="hidden" style="margin-top:10px;"></div>
+</div>
+
+<!-- Summary statistics -->
+<div class="card">
+  <div class="section-title">Repository Summary</div>
+  <div class="section-sub">Audit events from the selected source. Export JSON for external archiving.</div>
+
+  <div class="stats-bar" id="stats-bar">
+    <!-- filled by JS -->
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="btn-export">⬇ Export Full Log (JSON)</button>
+    <button class="btn btn-secondary" id="btn-refresh">↺ Refresh</button>
+    <button class="btn btn-danger"    id="btn-purge">🗑 Purge Audit Log</button>
+  </div>
+  <div id="repo-msg" class="hidden"></div>
+</div>
+
+<!-- Filter & log table -->
+<div class="card">
+  <div class="section-title">Event Log</div>
+  <div class="section-sub">Each row is one recorded event. Click "Details" to expand the full record.</div>
+
+  <div class="filter-bar">
+    <div>
+      <label for="filter-type">Event Type</label>
+      <select id="filter-type">
+        <option value="">All Types</option>
+        <option value="ANALYSIS">ANALYSIS</option>
+        <option value="ADMIN_UPLOAD">ADMIN_UPLOAD</option>
+        <option value="ADMIN_CLEAR">ADMIN_CLEAR</option>
+      </select>
+    </div>
+    <div>
+      <label for="filter-user">User ID</label>
+      <input type="text" id="filter-user" placeholder="e.g. AROYCH" autocomplete="off" />
+    </div>
+    <div>
+      <label for="filter-ps">Problem Statement</label>
+      <select id="filter-ps">
+        <option value="">All</option>
+        <option value="1">PS1 — Missing Tile</option>
+        <option value="2">PS2 — Tile Not Visible</option>
+        <option value="3">PS3 — Transaction Missing</option>
+      </select>
+    </div>
+    <div>
+      <label for="filter-outcome">Outcome</label>
+      <select id="filter-outcome">
+        <option value="">All</option>
+        <option value="success">Success</option>
+        <option value="error">Error / Not Assigned</option>
+        <option value="warning">Warning</option>
+        <option value="info">Info</option>
+      </select>
+    </div>
+    <div>
+      <label for="filter-date">Date (YYYY-MM-DD)</label>
+      <input type="text" id="filter-date" placeholder="2025-07-01" autocomplete="off" maxlength="10" />
+    </div>
+    <div style="align-self: flex-end;">
+      <button class="btn btn-secondary" id="btn-filter">Apply Filter</button>
+    </div>
+    <div style="align-self: flex-end;">
+      <button class="btn btn-secondary" id="btn-reset-filter">Reset</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <div id="log-container">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <div style="margin-top: 12px; font-size: 12px; color: #9ca3af;" id="row-count"></div>
+</div>
+
+<footer>
+  Made with IBM Bob &nbsp;|&nbsp; SAP Fiori Troubleshooter — Audit Repository
+  &nbsp;|&nbsp; All data stored locally &nbsp;|&nbsp;
+  <a href="index.html" style="color:#0f62fe;">User Tool</a> &nbsp;|&nbsp;
+  <a href="admin.html" style="color:#0f62fe;">Admin Setup</a>
+</footer>
+
+<script src="gist-storage.js"></script>
+<script>
+/* ─────────────────────────────────────────────────────────────────────────────
+   AUDIT REPOSITORY — client-side read + export for the Fiori Troubleshooter
+   Sources: (1) localStorage sft_audit_log  (2) shared GitHub Gist audit file
+   Log entry schema — all fields are plain strings; no image data is stored.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+const AUDIT_KEY   = 'sft_audit_log';
+
+// ─── Load all audit entries from localStorage ──────────────────────────────
+function loadLog() {
+  try {
+    const raw = localStorage.getItem(AUDIT_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch { return []; }
+}
+
+// ─── Merge two arrays deduplicated by entry id ────────────────────────────
+function mergeLogs(a, b) {
+  const seen = new Set();
+  return [...a, ...b].filter(e => {
+    if (!e.id || seen.has(e.id)) return false;
+    seen.add(e.id); return true;
+  });
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────
+const PS_LABELS = {
+  '1': 'PS1 — Missing Tile',
+  '2': 'PS2 — Tile Not Visible',
+  '3': 'PS3 — Transaction Missing'
+};
+
+function escapeTxt(s) {
+  if (typeof s !== 'string') return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function outcomeBadge(o) {
+  const map = { success:'badge-green', error:'badge-red', warning:'badge-yellow', info:'badge-blue' };
+  const cls = map[o] || 'badge-gray';
+  return `<span class="badge ${cls}">${escapeTxt((o||'—').toUpperCase())}</span>`;
+}
+
+function eventTypeBadge(t) {
+  if (t === 'ANALYSIS')     return `<span class="badge badge-blue">ANALYSIS</span>`;
+  if (t === 'ADMIN_UPLOAD') return `<span class="badge badge-purple">UPLOAD</span>`;
+  if (t === 'ADMIN_CLEAR')  return `<span class="badge badge-red">CLEAR</span>`;
+  return `<span class="badge badge-gray">${escapeTxt(t||'—')}</span>`;
+}
+
+function fmtTs(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    return d.toLocaleString('en-GB', { dateStyle:'short', timeStyle:'medium' });
+  } catch { return iso; }
+}
+
+// ─── Statistics ────────────────────────────────────────────────────────────
+function renderStats(entries) {
+  const total    = entries.length;
+  const analyses = entries.filter(e => e.eventType === 'ANALYSIS').length;
+  const uploads  = entries.filter(e => e.eventType === 'ADMIN_UPLOAD').length;
+  const clears   = entries.filter(e => e.eventType === 'ADMIN_CLEAR').length;
+  const users    = new Set(entries.filter(e => e.userId).map(e => e.userId)).size;
+
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat-chip"><div class="sc-val">${total}</div><div class="sc-lbl">Total Events</div></div>
+    <div class="stat-chip"><div class="sc-val">${analyses}</div><div class="sc-lbl">Analysis Runs</div></div>
+    <div class="stat-chip"><div class="sc-val">${uploads}</div><div class="sc-lbl">Admin Uploads</div></div>
+    <div class="stat-chip"><div class="sc-val">${clears}</div><div class="sc-lbl">Data Clear Events</div></div>
+    <div class="stat-chip"><div class="sc-val">${users}</div><div class="sc-lbl">Unique User IDs</div></div>
+  `;
+}
+
+// ─── Render table ──────────────────────────────────────────────────────────
+function renderTable(entries) {
+  const container = document.getElementById('log-container');
+  document.getElementById('row-count').textContent =
+    `Showing ${entries.length} event${entries.length !== 1 ? 's' : ''}`;
+
+  if (entries.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="es-icon">📭</div>
+        <div>No audit events found for the selected filter.</div>
+      </div>`;
+    return;
+  }
+
+  // Newest first
+  const sorted = [...entries].sort((a,b) => (b.ts||'').localeCompare(a.ts||''));
+
+  const rows = sorted.map((e, idx) => {
+    const rowId = 'row-' + idx;
+    const detailId = 'detail-' + idx;
+
+    // Build detail JSON (sanitised — no images)
+    const safeEntry = Object.assign({}, e);
+    const detailJson = escapeTxt(JSON.stringify(safeEntry, null, 2));
+
+    let contextCells = '';
+    if (e.eventType === 'ANALYSIS') {
+      contextCells = `
+        <td>${escapeTxt(e.userId || '—')}</td>
+        <td>${escapeTxt(e.tileName || '—')}</td>
+        <td>${escapeTxt(PS_LABELS[e.problemStatement] || e.problemStatement || '—')}</td>
+        <td>${outcomeBadge(e.outcome)}</td>`;
+    } else if (e.eventType === 'ADMIN_UPLOAD') {
+      const files = Array.isArray(e.filesUploaded)
+        ? e.filesUploaded.map(f => escapeTxt(f.key + ': ' + f.fileName + ' (' + f.rowCount + ' rows)')).join('<br>')
+        : '—';
+      contextCells = `<td colspan="4">${files}</td>`;
+    } else {
+      contextCells = `<td colspan="4" style="color:#9ca3af;">—</td>`;
+    }
+
+    return `
+      <tr id="${rowId}">
+        <td style="white-space:nowrap; font-size:11.5px; color:#57606a;">${fmtTs(e.ts)}</td>
+        <td>${eventTypeBadge(e.eventType)}</td>
+        ${contextCells}
+        <td>
+          <button class="detail-btn" onclick="toggleDetail('${detailId}')">Details</button>
+        </td>
+      </tr>
+      <tr class="hidden" id="${detailId}">
+        <td colspan="7" style="padding:8px 12px; background:#f8fafc;">
+          <pre class="detail-panel">${detailJson}</pre>
+        </td>
+      </tr>`;
+  }).join('');
+
+  container.innerHTML = `
+    <table class="log-table">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Event</th>
+          <th>User ID</th>
+          <th>Tile / Files</th>
+          <th>Problem Statement</th>
+          <th>Outcome</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function toggleDetail(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('hidden');
+}
+
+// ─── Filtering ─────────────────────────────────────────────────────────────
+let allEntries = [];
+
+function applyFilter() {
+  const typeVal    = document.getElementById('filter-type').value.trim();
+  const userVal    = document.getElementById('filter-user').value.trim().toUpperCase();
+  const psVal      = document.getElementById('filter-ps').value.trim();
+  const outcomeVal = document.getElementById('filter-outcome').value.trim();
+  const dateVal    = document.getElementById('filter-date').value.trim();
+
+  const filtered = allEntries.filter(e => {
+    if (typeVal    && e.eventType          !== typeVal)    return false;
+    if (userVal    && !(e.userId||'').toUpperCase().includes(userVal)) return false;
+    if (psVal      && e.problemStatement   !== psVal)      return false;
+    if (outcomeVal && e.outcome            !== outcomeVal) return false;
+    if (dateVal    && !(e.ts||'').startsWith(dateVal))     return false;
+    return true;
+  });
+
+  renderTable(filtered);
+}
+
+document.getElementById('btn-filter').addEventListener('click', applyFilter);
+document.getElementById('btn-reset-filter').addEventListener('click', () => {
+  ['filter-type','filter-user','filter-ps','filter-outcome','filter-date']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  renderTable(allEntries);
+});
+
+// ─── Export ────────────────────────────────────────────────────────────────
+document.getElementById('btn-export').addEventListener('click', () => {
+  if (allEntries.length === 0) {
+    showRepoMsg('info', 'No audit events to export.');
+    return;
+  }
+  const payload = JSON.stringify(allEntries, null, 2);
+  const blob    = new Blob([payload], { type: 'application/json' });
+  const url     = URL.createObjectURL(blob);
+  const a       = document.createElement('a');
+  const ts      = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+  a.href        = url;
+  a.download    = `sft_audit_log_${ts}.json`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
+});
+
+// ─── Purge ─────────────────────────────────────────────────────────────────
+document.getElementById('btn-purge').addEventListener('click', () => {
+  const count = allEntries.length;
+  if (count === 0) { showRepoMsg('info', 'Audit log is already empty.'); return; }
+
+  const confirmed = confirm(
+    `⚠️ IRREVERSIBLE ACTION\n\nThis will permanently delete all ${count} audit log entries from this browser.\n\nExport the JSON first if you need to archive the records.\n\nProceed with purge?`
+  );
+  if (!confirmed) return;
+
+  try {
+    localStorage.removeItem(AUDIT_KEY);
+    allEntries = [];
+    renderStats([]);
+    renderTable([]);
+    showRepoMsg('info', `Audit log purged. ${count} entries removed.`);
+  } catch(e) {
+    showRepoMsg('error', 'Purge failed: ' + e.message);
+  }
+});
+
+// ─── Refresh ───────────────────────────────────────────────────────────────
+document.getElementById('btn-refresh').addEventListener('click', boot);
+
+// ─── Source buttons ────────────────────────────────────────────────────────
+document.getElementById('btn-source-local').addEventListener('click', () => {
+  allEntries = loadLog();
+  renderStats(allEntries);
+  renderTable(allEntries);
+  document.getElementById('source-indicator').textContent = '💻 Showing: This browser only';
+});
+
+document.getElementById('btn-source-gist').addEventListener('click', async () => {
+  const cfg = GistStorage.loadConfig();
+  const sourceMsg = document.getElementById('source-msg');
+
+  if (!cfg.auditGistId || !cfg.auditPAT) {
+    sourceMsg.className = 'result-box error';
+    sourceMsg.textContent = '❌ Shared Gist not configured. Complete admin setup first (admin.html → Step 1).';
+    sourceMsg.classList.remove('hidden');
+    return;
+  }
+
+  const btn = document.getElementById('btn-source-gist');
+  btn.disabled = true;
+  btn.textContent = '⏳ Fetching…';
+  sourceMsg.className = 'hidden';
+
+  try {
+    const gistEntries = await GistStorage.fetchAuditLog(cfg.auditGistId, cfg.auditPAT);
+    const localEntries = loadLog();
+    allEntries = mergeLogs(gistEntries, localEntries);
+    renderStats(allEntries);
+    renderTable(allEntries);
+    document.getElementById('source-indicator').textContent =
+      `☁ Showing: Shared Gist (${gistEntries.length} remote + ${localEntries.length} local, deduped to ${allEntries.length})`;
+  } catch(e) {
+    sourceMsg.className = 'result-box error';
+    sourceMsg.textContent = '❌ Could not fetch Gist audit log: ' + e.message;
+    sourceMsg.classList.remove('hidden');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '☁ Load Shared Gist Log';
+});
+
+// ─── Message helper ────────────────────────────────────────────────────────
+function showRepoMsg(type, text) {
+  const el = document.getElementById('repo-msg');
+  el.className = 'result-box ' + type;
+  el.textContent = text;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 5000);
+}
+
+// ─── Boot ──────────────────────────────────────────────────────────────────
+function boot() {
+  // Always load local first for instant display; Gist load is on-demand via button
+  allEntries = loadLog();
+  renderStats(allEntries);
+  renderTable(allEntries);
+  document.getElementById('source-indicator').textContent = '💻 Showing: This browser only';
+
+  // If Gist is configured, auto-load shared log
+  const cfg = GistStorage.loadConfig();
+  if (cfg.auditGistId && cfg.auditPAT) {
+    document.getElementById('source-indicator').textContent = '⏳ Loading shared log from Gist…';
+    GistStorage.fetchAuditLog(cfg.auditGistId, cfg.auditPAT).then(gistEntries => {
+      const localEntries = loadLog();
+      allEntries = mergeLogs(gistEntries, localEntries);
+      renderStats(allEntries);
+      renderTable(allEntries);
+      document.getElementById('source-indicator').textContent =
+        `☁ Showing: Shared Gist (${gistEntries.length} remote + ${localEntries.length} local, deduped to ${allEntries.length})`;
+    }).catch(e => {
+      document.getElementById('source-indicator').textContent = '⚠️ Gist fetch failed — showing local only';
+      console.warn('Auto Gist fetch failed:', e.message);
+    });
+  }
+}
+
+boot();
+</script>
+
+</body>
+</html>

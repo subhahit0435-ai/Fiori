@@ -11,224 +11,336 @@
       font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
       font-size: 14px;
       line-height: 1.6;
-      background: #f7f8fa;
+      background: #f0f2f5;
       color: #1f2328;
       min-height: 100vh;
-      padding: 24px 16px 48px;
+      padding: 0 0 56px;
     }
 
-    .app-header {
-      max-width: 600px;
-      margin: 0 auto 24px;
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-    }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo-icon {
-      width: 42px; height: 42px;
-      background: #0f62fe;
+    /* ── Top banner header ───────────────────────────────────────────────── */
+    .site-header {
+      background: linear-gradient(135deg, #0f62fe 0%, #0043ce 100%);
+      padding: 28px 24px 24px;
       color: #fff;
-      border-radius: 8px;
-      font-weight: 700;
+    }
+    .site-header-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: rgba(255,255,255,.18);
+      border: 2px solid rgba(255,255,255,.35);
+      color: #fff;
+      border-radius: 12px;
+      font-weight: 800;
       font-size: 14px;
+      letter-spacing: .04em;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .app-header h1 { font-size: 22px; font-weight: 700; }
-    .app-header p  { color: #57606a; font-size: 13px; margin-top: 4px; }
+    .site-header h1 { font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
+    .site-header p  { font-size: 13px; opacity: .82; margin-top: 2px; }
 
-    /* No-data banner */
+    /* step pill row inside header */
+    .step-pill-row {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 14px 0 0;
+    }
+    .step-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,.55);
+      flex: 1;
+      position: relative;
+    }
+    .step-pill::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: rgba(255,255,255,.2);
+      margin-left: 8px;
+    }
+    .step-pill:last-child::after { display: none; }
+    .step-pill.active { color: #fff; }
+    .step-pill.done   { color: rgba(255,255,255,.75); }
+    .step-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      border: 2px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-pill.active .step-num {
+      background: #fff;
+      border-color: #fff;
+      color: #0f62fe;
+    }
+    .step-pill.done .step-num {
+      background: #22c55e;
+      border-color: #22c55e;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    /* ── Page body ───────────────────────────────────────────────────────── */
+    .page-body {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 28px 16px 0;
+    }
+
+    /* ── No-data banner ──────────────────────────────────────────────────── */
     .no-data-banner {
-      max-width: 600px;
-      margin: 0 auto 20px;
       background: #fffbeb;
       border: 1px solid #fde68a;
+      border-left: 4px solid #f59e0b;
       border-radius: 10px;
       padding: 18px 22px;
       color: #713f12;
       font-size: 13px;
+      margin-bottom: 20px;
     }
     .no-data-banner strong { display: block; font-size: 15px; margin-bottom: 6px; }
     .no-data-banner a { color: #c8372d; font-weight: 600; }
 
+    /* ── Card ────────────────────────────────────────────────────────────── */
     .card {
       background: #fff;
       border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 28px;
-      max-width: 600px;
-      margin: 0 auto 20px;
+      border-radius: 14px;
+      padding: 30px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
     }
-
-    .step-bar { display: flex; gap: 8px; margin-bottom: 20px; }
-    .step-dot  {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: #d1d5db;
-    }
-    .step-dot.active { background: #0f62fe; }
-    .step-dot.done   { background: #22c55e; }
 
     .section-title {
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.02em;
       margin-bottom: 4px;
+      color: #111827;
     }
     .section-sub {
       font-size: 13px;
-      color: #57606a;
-      margin-bottom: 22px;
+      color: #6b7280;
+      margin-bottom: 24px;
     }
 
+    /* ── Problem statement cards ─────────────────────────────────────────── */
     .ps-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 12px;
       margin-bottom: 8px;
     }
-    @media (max-width: 500px) { .ps-grid { grid-template-columns: 1fr; } }
 
     .ps-card {
       border: 2px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 14px;
+      border-radius: 12px;
+      padding: 16px 14px;
       cursor: pointer;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: flex-start;
-      transition: border-color .15s, background .15s;
+      transition: border-color .15s, background .15s, box-shadow .15s;
+      background: #fafafa;
     }
-    .ps-card:hover    { border-color: #0f62fe; background: #f0f5ff; }
-    .ps-card.selected { border-color: #0f62fe; background: #eef3ff; }
-    .ps-icon { font-size: 20px; flex-shrink: 0; }
-    .ps-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-    .ps-card p  { font-size: 12px; color: #57606a; }
+    .ps-card:hover {
+      border-color: #0f62fe;
+      background: #f0f5ff;
+      box-shadow: 0 0 0 4px rgba(15,98,254,.08);
+    }
+    .ps-card.selected {
+      border-color: #0f62fe;
+      background: #eef3ff;
+      box-shadow: 0 0 0 4px rgba(15,98,254,.12);
+    }
+    .ps-icon-wrap {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .ps-icon-wrap.ps1 { background: #fee2e2; }
+    .ps-icon-wrap.ps2 { background: #ffedd5; }
+    .ps-icon-wrap.ps3 { background: #fef9c3; }
+    .ps-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 3px; color: #111827; }
+    .ps-card p  { font-size: 12px; color: #6b7280; line-height: 1.5; }
 
-    .form-group { margin-bottom: 18px; }
+    /* ── Monospace text inputs (transaction codes etc.) ──────────────────── */
+    .input-mono,
+    .form-group input.input-mono {
+      font-family: monospace;
+      text-transform: uppercase;
+    }
+
+    /* ── Forms ───────────────────────────────────────────────────────────── */
+    .form-group { margin-bottom: 20px; }
     .form-group label {
       display: block;
       font-size: 13px;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
+      color: #374151;
     }
-    .form-group input[type="text"],
-    .form-group textarea {
+    .form-group input[type="text"] {
       width: 100%;
-      padding: 9px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
+      padding: 10px 13px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
       font-size: 14px;
       font-family: inherit;
       background: #fff;
       color: #1f2328;
       outline: none;
-      transition: border-color .15s;
+      transition: border-color .15s, box-shadow .15s;
     }
-    .form-group input[type="text"]:focus,
-    .form-group textarea:focus { border-color: #0f62fe; box-shadow: 0 0 0 3px rgba(15,98,254,.1); }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .form-hint { font-size: 12px; color: #57606a; margin-top: 4px; }
+    .form-group input[type="text"]:focus {
+      border-color: #0f62fe;
+      box-shadow: 0 0 0 3px rgba(15,98,254,.12);
+    }
+    .form-hint { font-size: 12px; color: #6b7280; margin-top: 5px; }
 
     .upload-zone {
       border: 2px dashed #d1d5db;
-      border-radius: 8px;
-      padding: 20px;
+      border-radius: 10px;
+      padding: 22px 20px;
       text-align: center;
       cursor: pointer;
       position: relative;
       transition: border-color .15s, background .15s;
+      background: #fafafa;
     }
     .upload-zone:hover { border-color: #0f62fe; background: #f0f5ff; }
     .upload-zone input[type="file"] {
       position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
     }
     .upload-zone .upload-icon { font-size: 28px; margin-bottom: 6px; }
-    .upload-zone p { font-size: 13px; color: #57606a; }
+    .upload-zone p { font-size: 13px; color: #6b7280; }
     .upload-zone .file-name {
       margin-top: 8px; font-size: 13px; font-weight: 600; color: #166534;
     }
 
-    .btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    /* ── Buttons ─────────────────────────────────────────────────────────── */
+    .btn-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 26px; }
+    .btn-row.btn-row-center { justify-content: center; }
+    .btn-full { width: 100%; justify-content: center; }
     .btn {
-      padding: 9px 20px;
-      border-radius: 6px;
+      padding: 10px 22px;
+      border-radius: 8px;
       border: none;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: background .15s;
+      transition: background .15s, box-shadow .15s, transform .1s;
+      display: inline-flex; align-items: center; gap: 6px;
     }
-    .btn:disabled { opacity: .45; cursor: not-allowed; }
-    .btn-primary   { background: #0f62fe; color: #fff; }
-    .btn-primary:hover:not(:disabled)   { background: #0353e9; }
-    .btn-secondary { background: #f3f4f6; color: #1f2328; border: 1px solid #d1d5db; }
+    .btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
+    .btn-primary {
+      background: #0f62fe;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(15,98,254,.25);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: #0353e9;
+      box-shadow: 0 4px 14px rgba(15,98,254,.35);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+      border: 1.5px solid #e5e7eb;
+    }
     .btn-secondary:hover:not(:disabled) { background: #e9eaec; }
 
+    /* ── Result boxes ────────────────────────────────────────────────────── */
     .result-box {
-      border-radius: 8px;
-      padding: 16px 18px;
+      border-radius: 10px;
+      padding: 18px 20px;
       font-size: 13px;
     }
-    .result-box.error   { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
-    .result-box.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
-    .result-box.warning { background: #fffbeb; border: 1px solid #fde68a; color: #713f12; }
-    .result-box.info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a5f; }
+    .result-box.error   { background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #ef4444; color: #7f1d1d; }
+    .result-box.success { background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #22c55e; color: #14532d; }
+    .result-box.warning { background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; color: #713f12; }
+    .result-box.info    { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #3b82f6; color: #1e3a5f; }
 
-    .result-title { font-weight: 700; font-size: 15px; margin-bottom: 10px; }
-
-    table.result-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
-    table.result-table th {
-      text-align: left; padding: 7px 10px;
-      background: rgba(0,0,0,.04);
-      border: 1px solid rgba(0,0,0,.08);
-      font-weight: 600;
+    .result-title {
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
     }
-    table.result-table td  { padding: 7px 10px; border: 1px solid rgba(0,0,0,.08); }
-    table.result-table tr:nth-child(even) td { background: rgba(0,0,0,.03); }
+
+    table.result-table {
+      width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px;
+    }
+    table.result-table th {
+      text-align: left; padding: 8px 11px;
+      background: rgba(0,0,0,.05);
+      border: 1px solid rgba(0,0,0,.08);
+      font-weight: 700;
+      color: #374151;
+    }
+    table.result-table td  { padding: 8px 11px; border: 1px solid rgba(0,0,0,.07); }
+    table.result-table tr:nth-child(even) td { background: rgba(0,0,0,.025); }
 
     .badge {
       display: inline-block;
-      padding: 2px 8px;
+      padding: 2px 9px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
+      letter-spacing: .02em;
     }
     .badge-green  { background: #dcfce7; color: #166534; }
     .badge-red    { background: #fee2e2; color: #991b1b; }
     .badge-blue   { background: #dbeafe; color: #1e40af; }
     .badge-yellow { background: #fef9c3; color: #854d0e; }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+    .role-meta { font-size: 11px; color: #6b7280; margin-top: 3px; }
 
-    .next-steps { margin-top: 14px; padding-left: 18px; }
-    .next-steps li { margin-bottom: 6px; padding-left: 4px; }
+    .next-steps { margin-top: 14px; padding-left: 20px; }
+    .next-steps li { margin-bottom: 7px; padding-left: 4px; line-height: 1.55; }
 
-    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 22px 0; }
 
     .spinner {
-      width: 18px; height: 18px;
-      border: 3px solid #e5e7eb;
+      width: 16px; height: 16px;
+      border: 2.5px solid #e5e7eb;
       border-top-color: #0f62fe;
       border-radius: 50%;
       animation: spin .7s linear infinite;
       display: inline-block;
       vertical-align: middle;
-      margin-right: 8px;
+      margin-right: 6px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .restart-row { text-align: center; margin-top: 8px; }
-    .restart-row a { font-size: 13px; color: #0f62fe; cursor: pointer; text-decoration: underline; }
-
     .hidden { display: none !important; }
 
+    /* ── Footer ──────────────────────────────────────────────────────────── */
     footer {
       text-align: center;
       font-size: 12px;
       color: #9ca3af;
       border-top: 1px solid #e5e7eb;
-      padding-top: 16px;
-      margin-top: 32px;
-      max-width: 600px;
+      padding-top: 18px;
+      margin-top: 36px;
+      max-width: 640px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -236,154 +348,128 @@
 </head>
 <body>
 
-<div class="app-header">
-  <div class="logo">
+<!-- ── Site Header ──────────────────────────────────────────────────────── -->
+<div class="site-header">
+  <div class="site-header-inner">
     <div class="logo-icon">SF</div>
     <div>
       <h1>SAP Fiori Troubleshooter</h1>
-      <p>Diagnose Fiori Launchpad issues step by step.</p>
+      <p>Diagnose Fiori Launchpad issues step by step — fast and locally.</p>
+    </div>
+  </div>
+
+  <!-- Step progress pills -->
+  <div class="step-pill-row" id="step-pills">
+    <div class="step-pill active" id="pill-1">
+      <div class="step-num" id="pnum-1">1</div>
+      <span>Problem Type</span>
+    </div>
+    <div class="step-pill" id="pill-2">
+      <div class="step-num" id="pnum-2">2</div>
+      <span>Details</span>
+    </div>
+    <div class="step-pill" id="pill-3">
+      <div class="step-num" id="pnum-3">3</div>
+      <span>Result</span>
     </div>
   </div>
 </div>
 
-<!-- No-data guard banner (shown if admin hasn't loaded data yet) -->
-<div class="no-data-banner hidden" id="no-data-banner">
-  <strong>⚠️ Data Not Available</strong>
-  The SAP reference data has not been loaded yet. Please ask your SAP admin to open
-  <a href="admin.html">admin.html</a> and upload the required files before using this tool.
-</div>
+<!-- ── Page body ────────────────────────────────────────────────────────── -->
+<div class="page-body">
 
-<!-- Step 1: Problem Statement -->
-<div class="card hidden" id="step-ps">
-  <div class="step-bar">
-    <div class="step-dot active"></div>
-    <div class="step-dot"></div>
-    <div class="step-dot"></div>
+  <!-- No-data guard banner -->
+  <div class="no-data-banner hidden" id="no-data-banner">
+    <strong>⚠️ Reference Data Not Available</strong>
+    SAP reference data has not been loaded yet. Please contact your SAP administrator to load the required data before using this tool.
   </div>
-  <div class="section-title">Step 1 — Select Problem Statement</div>
-  <div class="section-sub">Choose the option that best describes your issue.</div>
 
-  <div class="ps-grid">
-    <div class="ps-card" data-ps="1">
-      <div class="ps-icon">🔴</div>
-      <div>
-        <h3>Missing Tile</h3>
-        <p>Tile does not appear on my Fiori Launchpad at all.</p>
+  <!-- Step 1: Problem Statement -->
+  <div class="card hidden" id="step-ps">
+    <div class="section-title">Select Problem Statement</div>
+    <div class="section-sub">Choose the option that best describes your issue.</div>
+
+    <div class="ps-grid">
+      <div class="ps-card" data-ps="1">
+        <div class="ps-icon-wrap ps1">🚫</div>
+        <div>
+          <h3>Missing Tile</h3>
+          <p>Tile does not appear on my Fiori Launchpad at all.</p>
+        </div>
+      </div>
+      <div class="ps-card" data-ps="2">
+        <div class="ps-icon-wrap ps2">👁️</div>
+        <div>
+          <h3>Tile Not Visible After Assignment</h3>
+          <p>Role was assigned but the tile is still not visible.</p>
+        </div>
+      </div>
+      <div class="ps-card" data-ps="3">
+        <div class="ps-icon-wrap ps3">🧩</div>
+        <div>
+          <h3>Transaction Missing in Tile</h3>
+          <p>I can see the tile but a specific transaction is missing.</p>
+        </div>
       </div>
     </div>
-    <div class="ps-card" data-ps="2">
-      <div class="ps-icon">🟠</div>
-      <div>
-        <h3>Tile Not Visible After Assignment</h3>
-        <p>Admin assigned the tile but I still cannot see it.</p>
+
+    <div class="btn-row btn-row-center">
+      <button class="btn btn-primary btn-full" id="btn-ps-next" disabled>Continue →</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Inputs -->
+  <div class="card hidden" id="step-inputs">
+    <div class="section-title">Provide Details</div>
+    <div class="section-sub" id="inputs-sub">Please fill in the details below.</div>
+
+    <div class="form-group">
+      <label for="input-userid">Your User ID <span style="color:#ef4444">*</span></label>
+      <input type="text" id="input-userid" placeholder="e.g. AROYCH" autocomplete="off" />
+    </div>
+
+    <div class="form-group">
+      <label for="input-tile">Tile Name <span style="color:#ef4444">*</span></label>
+      <input type="text" id="input-tile" placeholder="e.g. Display Outbound Delivery" autocomplete="off" />
+    </div>
+
+    <div class="form-group hidden" id="group-transaction">
+      <label for="input-transaction">Missing Transaction Name <span style="color:#ef4444">*</span></label>
+      <input type="text" id="input-transaction"
+             class="input-mono"
+             placeholder="e.g. VL03N"
+             autocomplete="off" spellcheck="false"
+             oninput="this.value=this.value.toUpperCase()" />
+      <div class="form-hint">Enter the transaction code that is missing from the tile (e.g. from S_TCODE / Value 1).</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="btn-inputs-back">← Back</button>
+      <button class="btn btn-primary"   id="btn-inputs-next">Analyze →</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Result -->
+  <div class="card hidden" id="step-result">
+    <div class="section-title">Analysis Result</div>
+    <div class="section-sub" id="result-sub"></div>
+    <div id="result-content"></div>
+    <hr class="divider" />
+    <div class="btn-row" style="justify-content: space-between; align-items: center; margin-top: 0;">
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-secondary" id="btn-result-back-inputs">← Back to Details</button>
+        <button class="btn btn-secondary" id="btn-result-back-ps">↩ Change Problem Type</button>
       </div>
-    </div>
-    <div class="ps-card" data-ps="3">
-      <div class="ps-icon">🟡</div>
-      <div>
-        <h3>Transaction Missing in Tile</h3>
-        <p>I can see the tile but a specific transaction is missing.</p>
-      </div>
-    </div>
-    <div class="ps-card" data-ps="4">
-      <div class="ps-icon">🔵</div>
-      <div>
-        <h3>Authorization Issue</h3>
-        <p>I have the tile but get an authorization error when using it.</p>
-      </div>
+      <a id="btn-restart" style="font-size:13px; color:#0f62fe; cursor:pointer; text-decoration:underline; font-weight:600;">⟳ New Investigation</a>
     </div>
   </div>
 
-  <div class="btn-row">
-    <button class="btn btn-primary" id="btn-ps-next" disabled>Continue →</button>
-  </div>
-</div>
+  <footer>Made with IBM Bob &nbsp;|&nbsp; SAP Fiori Troubleshooter &nbsp;|&nbsp; All data processed locally in your browser &nbsp;|&nbsp; <a href="repository.html" style="color:#0f62fe; font-weight:600;">📋 Audit Repository</a></footer>
 
-<!-- Step 2: Inputs -->
-<div class="card hidden" id="step-inputs">
-  <div class="step-bar">
-    <div class="step-dot done"></div>
-    <div class="step-dot active"></div>
-    <div class="step-dot"></div>
-  </div>
-  <div class="section-title">Step 2 — Provide Details</div>
-  <div class="section-sub" id="inputs-sub">Please fill in the details below.</div>
-
-  <div class="form-group">
-    <label for="input-userid">Your User ID <span style="color:#ef4444">*</span></label>
-    <input type="text" id="input-userid" placeholder="e.g. AROYCH" autocomplete="off" />
-  </div>
-
-  <div class="form-group">
-    <label for="input-tile">Tile Name <span style="color:#ef4444">*</span></label>
-    <input type="text" id="input-tile" placeholder="e.g. Display Outbound Delivery" autocomplete="off" />
-  </div>
-
-  <div class="form-group hidden" id="group-transaction">
-    <label for="input-transaction">Missing Transaction Name <span style="color:#ef4444">*</span></label>
-    <input type="text" id="input-transaction" placeholder="e.g. VL02N" autocomplete="off" />
-    <div class="form-hint">Enter the transaction code or name that is missing from the tile.</div>
-    <div style="margin-top:10px;">
-      <label style="font-size:13px; font-weight:600; display:block; margin-bottom:6px;">
-        Screenshot <span style="color:#9ca3af; font-weight:400;">(optional — attach if you have one)</span>
-      </label>
-      <div class="upload-zone" id="zone-ps3-screenshot" style="padding:14px;">
-        <input type="file" accept="image/*" id="file-ps3-screenshot" />
-        <div class="upload-icon" style="font-size:20px;">🖼️</div>
-        <p style="font-size:12px;">Click to attach a screenshot</p>
-        <div class="file-name hidden" id="fname-ps3-screenshot"></div>
-        <img id="preview-ps3-screenshot" class="hidden" style="max-width:100%; max-height:200px; margin-top:10px; border-radius:6px; border:1px solid #e5e7eb;" />
-      </div>
-    </div>
-  </div>
-
-  <div class="form-group hidden" id="group-auth">
-    <label>Missing Authorization Object <span style="color:#ef4444">*</span></label>
-    <input type="text" id="input-auth" placeholder="e.g. S_TCODE, V_VBAK_AAT" autocomplete="off" />
-    <div class="form-hint">Enter the missing authorization object name from your SU53 output.</div>
-    <div style="margin-top:10px;">
-      <label style="font-size:13px; font-weight:600; display:block; margin-bottom:6px;">
-        SU53 Screenshot <span style="color:#9ca3af; font-weight:400;">(optional — attach for reference)</span>
-      </label>
-      <div class="upload-zone" id="zone-su53-screenshot" style="padding:14px;">
-        <input type="file" accept="image/*" id="file-su53-screenshot" />
-        <div class="upload-icon" style="font-size:20px;">🖼️</div>
-        <p style="font-size:12px;">Click to attach your SU53 screenshot</p>
-        <div class="file-name hidden" id="fname-su53-screenshot"></div>
-        <img id="preview-su53-screenshot" class="hidden" style="max-width:100%; max-height:200px; margin-top:10px; border-radius:6px; border:1px solid #e5e7eb;" />
-      </div>
-    </div>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-secondary" id="btn-inputs-back">← Back</button>
-    <button class="btn btn-primary"   id="btn-inputs-next">Analyze →</button>
-  </div>
-</div>
-
-<!-- Step 3: Result -->
-<div class="card hidden" id="step-result">
-  <div class="step-bar">
-    <div class="step-dot done"></div>
-    <div class="step-dot done"></div>
-    <div class="step-dot active"></div>
-  </div>
-  <div class="section-title">Step 3 — Analysis Result</div>
-  <div class="section-sub" id="result-sub"></div>
-  <div id="result-content"></div>
-  <hr class="divider" />
-  <div class="btn-row" style="justify-content: space-between; align-items: center; margin-top: 0;">
-    <div style="display:flex; gap:10px;">
-      <button class="btn btn-secondary" id="btn-result-back-inputs">← Back to Details</button>
-      <button class="btn btn-secondary" id="btn-result-back-ps">↩ Change Problem Type</button>
-    </div>
-    <a id="btn-restart" style="font-size:13px; color:#0f62fe; cursor:pointer; text-decoration:underline;">⟳ New Investigation</a>
-  </div>
-</div>
-
-<footer>Made with IBM Bob &nbsp;|&nbsp; SAP Fiori Troubleshooter &nbsp;|&nbsp; All data processed locally in your browser</footer>
+</div><!-- /page-body -->
 
 <script src="lz-string.min.js"></script>
+<script src="gist-storage.js"></script>
 <script>
 // ─── Storage keys (must match admin.html) ─────────────────────────────────────
 const KEYS = {
@@ -393,20 +479,97 @@ const KEYS = {
   agr1251:  'sft_agr1251'
 };
 
+// ─── Audit Repository ─────────────────────────────────────────────────────────
+// Schema: { id, ts, eventType, sessionId, userId, tileName, problemStatement,
+//           psLabel, transaction, authObject, screenshotAttached, outcome,
+//           outcomeTitle, checksum }
+// No image/binary data is ever persisted.  Max 5 000 entries; oldest pruned.
+const AUDIT_KEY      = 'sft_audit_log';
+const AUDIT_MAX      = 5000;
+const AUDIT_SESSION  = (function(){
+  // Tab-scoped session ID reuses sessionStorage so refresh creates a new one
+  let s = sessionStorage.getItem('sft_session_id');
+  if (!s) { s = crypto.randomUUID(); sessionStorage.setItem('sft_session_id', s); }
+  return s;
+})();
+
+const PS_AUDIT_LABELS = {
+  '1': 'PS1 — Missing Tile',
+  '2': 'PS2 — Tile Not Visible After Assignment',
+  '3': 'PS3 — Transaction Missing in Tile'
+};
+
+// ─── Output escaping helper ───────────────────────────────────────────────────
+function _esc(s) {
+  if (typeof s !== 'string') return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// djb2 checksum for lightweight tamper-evidence on the entry id+ts+eventType
+function _djb2(str) {
+  let h = 5381;
+  for (let i = 0; i < str.length; i++) h = (((h << 5) + h) + str.charCodeAt(i)) >>> 0;
+  return h.toString(16);
+}
+
+function _auditLoadLog() {
+  try {
+    const raw = localStorage.getItem(AUDIT_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch { return []; }
+}
+
+function _auditSaveLog(entries) {
+  try { localStorage.setItem(AUDIT_KEY, JSON.stringify(entries)); } catch { /* storage full — skip */ }
+}
+
+// Write audit entry locally AND push to shared Gist (fire-and-forget)
+function auditLog(entry) {
+  const id  = crypto.randomUUID();
+  const ts  = new Date().toISOString();
+  const rec = Object.assign({ id, ts, sessionId: AUDIT_SESSION }, entry);
+  rec.checksum = _djb2(id + ts + (rec.eventType || ''));
+
+  const log = _auditLoadLog();
+  log.push(rec);
+  if (log.length > AUDIT_MAX) log.splice(0, log.length - AUDIT_MAX);
+  _auditSaveLog(log);
+
+  // Push to shared audit Gist asynchronously — non-blocking, errors swallowed
+  const gistCfg = GistStorage.loadConfig();
+  if (gistCfg.auditGistId && gistCfg.auditPAT) {
+    GistStorage.appendAuditEntry(gistCfg.auditGistId, gistCfg.auditPAT, rec)
+      .catch(e => console.warn('Gist audit push failed (non-fatal):', e.message));
+  }
+}
+
 // ─── State ────────────────────────────────────────────────────────────────────
 const state = {
   data: { flpca: null, agrusers: null, agragrs: null, agr1251: null },
   ps:          null,
   userId:      '',
   tileName:    '',
-  transaction: '',
-  auth:        ''
+  transaction: ''
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function show(id)  { document.getElementById(id).classList.remove('hidden'); }
 function hide(id)  { document.getElementById(id).classList.add('hidden'); }
 function val(id)   { return document.getElementById(id).value.trim(); }
+
+// ─── Step pill helper ──────────────────────────────────────────────────────────
+function setPills(active) {
+  [1, 2, 3].forEach(n => {
+    const pill = document.getElementById('pill-' + n);
+    const num  = document.getElementById('pnum-' + n);
+    pill.className = 'step-pill';
+    if (n < active)       { pill.classList.add('done');   num.textContent = '✓'; }
+    else if (n === active){ pill.classList.add('active'); num.textContent = n; }
+    else                  { num.textContent = n; }
+  });
+}
 
 // ─── Decompress and parse from localStorage ───────────────────────────────────
 function retrieve(storageKey) {
@@ -417,13 +580,67 @@ function retrieve(storageKey) {
 }
 
 // ─── Load data from localStorage ──────────────────────────────────────────────
+// Required FLPCA columns for PS2/PS3 logic — if any are missing the data is stale (old upload)
+const FLPCA_REQUIRED_COLS = [
+  'Role',
+  'Title/Subtitle/Information',
+  'Tile / Target Mapping Matching Text',
+  'Semantic Object',
+  'Action',
+  'Application Ressource'
+];
+
+function _checkFlpcaColumns(rows) {
+  if (!rows || rows.length === 0) return [];
+  const sample = rows[0];
+  return FLPCA_REQUIRED_COLS.filter(c => !(c in sample));
+}
+
+function normalizeRow(row, key) {
+  const r = row || {};
+  if (key === 'agrusers') {
+    return {
+      UNAME:    (r['UNAME'] || r['User Name'] || r['USER_NAME'] || r['BNAME'] || '').toString().trim(),
+      AGR_NAME: (r['AGR_NAME'] || r['Role'] || r['ROLE'] || '').toString().trim(),
+      FROM_DAT: (r['FROM_DAT'] || r['Start date'] || r['FROM_DATE'] || '').toString().trim(),
+      TO_DAT:   (r['TO_DAT']   || r['End date']   || r['TO_DATE']   || '').toString().trim()
+    };
+  }
+  if (key === 'agragrs') {
+    return {
+      AGR_NAME:  (r['AGR_NAME'] || r['Composite role'] || r['COMPOSITE_ROLE'] || '').toString().trim(),
+      CHILD_AGR: (r['CHILD_AGR'] || r['Role'] || r['SINGLE_ROLE'] || r['CHILD_ROLE'] || '').toString().trim()
+    };
+  }
+  if (key === 'agr1251') {
+    return {
+      AGR_NAME: (r['AGR_NAME'] || r['Role'] || r['ROLE'] || '').toString().trim(),
+      OBJECT:   (r['OBJECT'] || r['Authorization object'] || r['AUTH_OBJECT'] || '').toString().trim(),
+      FIELD:    (r['FIELD'] || r['Field name'] || r['FIELD_NAME'] || '').toString().trim(),
+      LOW:      (r['LOW'] || r['Authorization value'] || r['AUTH_VALUE'] || r['VAL_LOW'] || '').toString().trim(),
+      HIGH:     (r['HIGH'] || r['Authorization value_1'] || r['VAL_HIGH'] || '').toString().trim()
+    };
+  }
+  if (key === 'flpca') {
+    return {
+      'Role':                                (r['Role'] || r['AGR_NAME'] || '').toString().trim(),
+      'Title/Subtitle/Information':          (r['Title/Subtitle/Information'] || r['Tile Title'] || r['Target Mapping Title'] || '').toString().trim(),
+      'Tile / Target Mapping Matching Text': (r['Tile / Target Mapping Matching Text'] || '').toString().trim(),
+      'Semantic Object':                     (r['Semantic Object'] || r['SEMANTIC_OBJECT'] || '').toString().trim(),
+      'Action':                              (r['Action'] || r['ACTION'] || '').toString().trim(),
+      'Application Ressource':               (r['Application Ressource'] || r['Application Resource'] || r['Transaction'] || '').toString().trim()
+    };
+  }
+  return r;
+}
+
 function loadStoredData() {
   let allPresent = true;
   ['flpca', 'agrusers', 'agragrs'].forEach(key => {
     try {
       const rows = retrieve(KEYS[key]);
       if (rows) {
-        state.data[key] = rows;
+        state.data[key] = Array.isArray(rows) ? rows.map(r => normalizeRow(r, key)) : rows;
       } else {
         allPresent = false;
       }
@@ -433,35 +650,182 @@ function loadStoredData() {
   // agr1251 is optional
   try {
     const rows = retrieve(KEYS.agr1251);
-    if (rows) state.data.agr1251 = rows;
+    if (rows) state.data.agr1251 = Array.isArray(rows) ? rows.map(r => normalizeRow(r, 'agr1251')) : rows;
   } catch { /* optional — ignore */ }
 
   return allPresent;
 }
 
-// ─── Boot: show guard or main flow ────────────────────────────────────────────
-if (loadStoredData()) {
-  show('step-ps');
-} else {
-  show('no-data-banner');
+// Check for stale FLPCA data (missing columns from old upload) and show banner if needed
+function checkStaleData() {
+  if (!state.data.flpca) return false;
+  const missing = _checkFlpcaColumns(state.data.flpca);
+  if (missing.length === 0) return false;
+  const banner = document.getElementById('no-data-banner');
+  banner.innerHTML = `
+    <strong>⚠️ Stale Data Detected — Please Re-upload</strong>
+    The SAP data currently stored was uploaded with an older version of the tool and is missing
+    the following column(s) required for full analysis:
+    <strong>${missing.map(c => `"${c}"`).join(', ')}</strong>.<br><br>
+    Ask your SAP admin to re-upload the files in
+    <a href="admin.html">admin.html</a> to restore full functionality.
+    <br><small style="margin-top:6px;display:block;color:#9b1c1c;">
+      PS2 and PS3 analysis will not work correctly until the data is refreshed.
+    </small>`;
+  banner.classList.remove('hidden');
+  return true;
 }
 
-// ─── Screenshot preview ───────────────────────────────────────────────────────
-function setupScreenshotInput(inputId, fnameId, previewId) {
-  document.getElementById(inputId).addEventListener('change', function () {
-    const file = this.files[0];
-    if (!file) return;
-    const fname   = document.getElementById(fnameId);
-    const preview = document.getElementById(previewId);
-    fname.textContent = '📎 ' + file.name;
-    fname.classList.remove('hidden');
-    const reader = new FileReader();
-    reader.onload = e => { preview.src = e.target.result; preview.classList.remove('hidden'); };
-    reader.readAsDataURL(file);
-  });
+// ─── Load data from shared Gist ───────────────────────────────────────────────
+// If a dataGistId is configured, fetch SAP data from the Gist and store to
+// localStorage so subsequent loads are instant (cache-then-refresh pattern).
+async function loadFromGist(dataGistId) {
+  try {
+    const payload = await GistStorage.fetchData(dataGistId);
+    // Cache each data key locally using LZString compression
+    ['flpca', 'agrusers', 'agragrs', 'agr1251'].forEach(key => {
+      if (payload[key] && Array.isArray(payload[key])) {
+        const normalized = payload[key].map(r => normalizeRow(r, key));
+        const json       = JSON.stringify(normalized);
+        const compressed = LZString.compressToUTF16(json);
+        localStorage.setItem(KEYS[key], compressed);
+        state.data[key]  = normalized;
+      }
+    });
+    // Cache meta
+    if (payload._meta) localStorage.setItem('sft_meta', JSON.stringify(payload._meta));
+
+    // Fetch and cache the runtime config (auditGistId + auditPAT) from the data Gist
+    try {
+      const rtCfg = await GistStorage.fetchRuntimeConfig(dataGistId);
+      if (rtCfg.auditGistId && rtCfg.auditPAT) {
+        const existing = GistStorage.loadConfig();
+        existing.auditGistId = rtCfg.auditGistId;
+        existing.auditPAT    = rtCfg.auditPAT;
+        GistStorage.saveConfig(existing);
+      }
+    } catch { /* runtime config fetch is non-fatal */ }
+
+    return true;
+  } catch(e) {
+    console.warn('Gist data fetch failed:', e.message);
+    return false;
+  }
 }
-setupScreenshotInput('file-ps3-screenshot', 'fname-ps3-screenshot', 'preview-ps3-screenshot');
-setupScreenshotInput('file-su53-screenshot', 'fname-su53-screenshot', 'preview-su53-screenshot');
+
+// ─── Boot: show guard or main flow ────────────────────────────────────────────
+// Priority: 1) load from localStorage cache; 2) fetch from Gist if configured;
+// 3) prompt user for Gist ID; 4) show no-data banner.
+(async function boot() {
+  // If local cache has all required data, show UI immediately (fast path)
+  if (loadStoredData()) {
+    show('step-ps');
+    setPills(1);
+    // Background refresh from Gist if configured — updates cache silently
+    const cfg = GistStorage.loadConfig();
+    if (cfg.dataGistId) {
+      loadFromGist(cfg.dataGistId).catch(() => {});
+    }
+    return;
+  }
+
+  // Check for stale FLPCA data (uploaded before column set was expanded)
+  checkStaleData();
+
+  // No local data — try Gist
+  const cfg = GistStorage.loadConfig();
+  if (cfg.dataGistId) {
+    // Show loading state
+    const banner = document.getElementById('no-data-banner');
+    banner.innerHTML = '<strong>⏳ Loading data from shared repository…</strong><br>Fetching SAP data from GitHub Gist. Please wait.';
+    banner.classList.remove('hidden');
+
+    const ok = await loadFromGist(cfg.dataGistId);
+    if (ok && state.data.flpca && state.data.agrusers && state.data.agragrs) {
+      banner.classList.add('hidden');
+      show('step-ps');
+      setPills(1);
+    } else {
+      banner.innerHTML = '<strong>⚠️ Could not load data from shared Gist.</strong><br>Check your internet connection or ask your SAP admin to re-publish the data.';
+    }
+    return;
+  }
+
+  // No Gist configured — prompt for Gist ID
+  const banner = document.getElementById('no-data-banner');
+  banner.innerHTML = `
+    <strong>🔗 Enter Shared Repository ID</strong><br>
+    Your SAP admin has published the data to a shared repository.
+    Enter the <strong>Data Gist ID</strong> they gave you below.
+    <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+      <input type="text" id="gist-id-input" placeholder="e.g. a1b2c3d4e5f6…"
+             style="flex:1; min-width:200px; padding:8px 10px; border:1px solid #d1d5db;
+                    border-radius:6px; font-size:13px;" autocomplete="off" spellcheck="false" />
+      <button id="gist-id-submit"
+              style="padding:8px 16px; background:#0f62fe; color:#fff; border:none;
+                     border-radius:6px; font-size:13px; font-weight:600; cursor:pointer;">
+        Connect →
+      </button>
+    </div>
+    <div id="gist-connect-msg" style="margin-top:8px; font-size:12px; color:#57606a;"></div>`;
+  banner.classList.remove('hidden');
+
+  document.getElementById('gist-id-submit').addEventListener('click', async () => {
+    const gistId = document.getElementById('gist-id-input').value.trim();
+    if (!gistId) return;
+    const msgEl = document.getElementById('gist-connect-msg');
+    msgEl.textContent = '⏳ Connecting…';
+
+    // Save the Gist ID to config and attempt load
+    const existing = GistStorage.loadConfig();
+    existing.dataGistId = gistId;
+    GistStorage.saveConfig(existing);
+
+    const ok = await loadFromGist(gistId);
+    if (ok && state.data.flpca && state.data.agrusers && state.data.agragrs) {
+      banner.classList.add('hidden');
+      show('step-ps');
+      setPills(1);
+    } else {
+      msgEl.textContent = '❌ Could not load data. Check the Gist ID and try again.';
+      // Reset the saved ID so user can retry
+      existing.dataGistId = '';
+      GistStorage.saveConfig(existing);
+    }
+  });
+})();
+
+// ─── 'O' <-> '0' Confusion Resolution Helper ──────────────────────────────────
+// When SU53 inputs contain 'O' or '0', generate permutation variations so that
+// typographical confusions between letter O and digit 0 are transparently resolved.
+function _getO0Variants(str) {
+  if (!str) return [];
+  const s = String(str).trim().toUpperCase();
+  const variants = [s];
+
+  if (s.includes('O') || s.includes('0')) {
+    function generateCombos(curr, idx) {
+      if (idx === s.length) {
+        if (curr !== s && !variants.includes(curr)) {
+          variants.push(curr);
+        }
+        return;
+      }
+      const ch = s[idx];
+      if (ch === 'O') {
+        generateCombos(curr + 'O', idx + 1);
+        generateCombos(curr + '0', idx + 1);
+      } else if (ch === '0') {
+        generateCombos(curr + '0', idx + 1);
+        generateCombos(curr + 'O', idx + 1);
+      } else {
+        generateCombos(curr + ch, idx + 1);
+      }
+    }
+    generateCombos('', 0);
+  }
+  return variants;
+}
 
 // ─── Step 1: Problem Statement ────────────────────────────────────────────────
 document.querySelectorAll('.ps-card').forEach(card => {
@@ -475,130 +839,158 @@ document.querySelectorAll('.ps-card').forEach(card => {
 
 document.getElementById('btn-ps-next').addEventListener('click', () => {
   hide('group-transaction');
-  hide('group-auth');
   if (state.ps === '3') show('group-transaction');
-  if (state.ps === '4') show('group-auth');
 
   const subs = {
     '1': 'Problem Statement 1 — Missing Tile',
     '2': 'Problem Statement 2 — Tile Not Visible After Assignment',
-    '3': 'Problem Statement 3 — Transaction Missing in Tile',
-    '4': 'Problem Statement 4 — Authorization Issue'
+    '3': 'Problem Statement 3 — Transaction Missing in Tile'
   };
   document.getElementById('inputs-sub').textContent = subs[state.ps];
   hide('step-ps'); show('step-inputs');
+  setPills(2);
 });
 
 // ─── Step 2: Inputs ───────────────────────────────────────────────────────────
 document.getElementById('btn-inputs-back').addEventListener('click', () => {
   hide('step-inputs'); show('step-ps');
+  setPills(1);
 });
 
 document.getElementById('btn-inputs-next').addEventListener('click', () => {
   state.userId      = val('input-userid');
   state.tileName    = val('input-tile');
-  state.transaction = val('input-transaction');
-  state.auth        = val('input-auth');
+  state.transaction = val('input-transaction').toUpperCase().trim();
 
   if (!state.userId || !state.tileName) {
     alert('Please fill in User ID and Tile Name.');
     return;
   }
   if (state.ps === '3' && !state.transaction) {
-    alert('Please provide the missing transaction name.');
-    return;
-  }
-  if (state.ps === '4' && !state.auth) {
-    alert('Please provide the missing authorization object.');
+    alert('Please enter the missing transaction name.');
     return;
   }
 
   runAnalysis();
   hide('step-inputs');
   show('step-result');
+  setPills(3);
 });
 
 // ─── Step 3: Result back buttons ──────────────────────────────────────────────
 document.getElementById('btn-result-back-inputs').addEventListener('click', () => {
   hide('step-result'); show('step-inputs');
+  setPills(2);
 });
 
 document.getElementById('btn-result-back-ps').addEventListener('click', () => {
   hide('step-result'); show('step-ps');
+  setPills(1);
 });
 
 // ─── Analysis ─────────────────────────────────────────────────────────────────
-function runAnalysis() {
-  const ps = state.ps;
-  document.getElementById('result-sub').textContent =
-    `User: ${state.userId}  |  Tile: ${state.tileName}  |  Problem Statement: ${ps}`;
+// Holds the outcome of the current analysis run so auditLog can capture it.
+let _currentOutcome = { type: '', title: '' };
 
-  if (ps === '1' || ps === '2') analyzePS1or2();
+function runAnalysis() {
+  _currentOutcome = { type: '', title: '' };
+  const ps = state.ps;
+  const subText = `User: ${state.userId}  |  Tile: ${state.tileName}  |  Problem Statement: ${ps}`;
+  document.getElementById('result-sub').textContent = subText;
+
+  if (ps === '1') analyzePS1();
+  else if (ps === '2') analyzePS2();
   else if (ps === '3') analyzePS3();
-  else if (ps === '4') analyzePS4();
+
+  // Record analysis event
+  auditLog({
+    eventType:          'ANALYSIS',
+    userId:             state.userId,
+    tileName:           state.tileName,
+    problemStatement:   ps,
+    psLabel:            PS_AUDIT_LABELS[ps] || ps,
+    transaction:        state.transaction || '',
+    authObject:         '',
+    screenshotAttached: false,
+    screenshotFileName: '',
+    outcome:            _currentOutcome.type,
+    outcomeTitle:       _currentOutcome.title
+  });
 }
 
-// ── PS1 & PS2 ─────────────────────────────────────────────────────────────────
-function analyzePS1or2() {
-  const tileName = state.tileName.toLowerCase();
-  const userId   = state.userId.toUpperCase();
+// ── Shared FLPCA lookup: tile name → { singleRoles, compositeRoles, allRoles, tileRows } ───────
+function _lookupTileRoles(tileName) {
+  const tileNameLc = tileName.toLowerCase();
+  const flpcaRows  = state.data.flpca;
 
-  const flpcaRows = state.data.flpca;
+  const tileRows = flpcaRows.filter(
+    r => (r['Title/Subtitle/Information'] || '').toLowerCase() === tileNameLc
+  );
   const singleRoles = [...new Set(
-    flpcaRows
-      .filter(r => (r['Title/Subtitle/Information'] || '').toLowerCase() === tileName)
-      .map(r => (r['Role'] || '').trim())
-      .filter(Boolean)
+    tileRows.map(r => (r['Role'] || '').trim()).filter(Boolean)
   )];
 
-  if (singleRoles.length === 0) {
-    renderResult('warning', '⚠️ Tile Not Found',
-      `<p>No roles were found carrying a tile named <strong>"${state.tileName}"</strong> in the FLPCA data.</p>
-       <p style="margin-top:8px">Please check the tile name spelling and try again.</p>`);
-    return;
-  }
-
-  const agrsRows = state.data.agragrs;
   const compositeRoles = [...new Set(
-    agrsRows
+    (state.data.agragrs || [])
       .filter(r => singleRoles.includes((r['CHILD_AGR'] || '').trim()))
       .map(r => (r['AGR_NAME'] || '').trim())
       .filter(Boolean)
   )];
 
   const allRoles = [...new Set([...singleRoles, ...compositeRoles])];
+  return { tileRows, singleRoles, compositeRoles, allRoles };
+}
 
-  const userRows = state.data.agrusers;
-  const userAssignedRoles = userRows
+// ── Shared AGR_USERS lookup: userId + allRoles → uniqueAssigned ──────────────
+function _lookupUserAssignment(userId, allRoles, compositeRoles) {
+  const userRows = state.data.agrusers || [];
+  const seen = new Set();
+  return userRows
     .filter(r =>
       (r['UNAME'] || '').trim().toUpperCase() === userId &&
       allRoles.includes((r['AGR_NAME'] || '').trim())
     )
     .map(r => ({
-      role:     (r['AGR_NAME']  || '').trim(),
-      fromDate: (r['FROM_DAT']  || '').trim(),
-      toDate:   (r['TO_DAT']    || '').trim()
-    }));
+      role:     (r['AGR_NAME'] || '').trim(),
+      fromDate: (r['FROM_DAT'] || '').trim(),
+      toDate:   (r['TO_DAT']   || '').trim(),
+      isComp:   compositeRoles.includes((r['AGR_NAME'] || '').trim())
+    }))
+    .filter(r => { if (seen.has(r.role)) return false; seen.add(r.role); return true; });
+}
 
-  const seen = new Set();
-  const uniqueAssigned = userAssignedRoles.filter(r => {
-    if (seen.has(r.role)) return false;
-    seen.add(r.role); return true;
-  });
+// ── PS1: Missing Tile ─────────────────────────────────────────────────────────
+// STEPS: 1) FLPCA → Role Set 1 (single roles for tile)
+//         2) AGR_AGRS CHILD_AGR=Role Set 1 → Role Set 2 (composite roles)
+//         3) AGR_USERS AGR_NAME=Role Set 1+Role Set 2, UNAME=USER_ID → check if user exists
+// OUTPUT: If USER_ID not found → "do not have access to any of the below roles: Role Set 1 + Role Set 2"
+//         Else → "problem statement does not match; roles found"
+function analyzePS1() {
+  const userId = state.userId.toUpperCase();
+  const { tileRows, singleRoles, compositeRoles, allRoles } = _lookupTileRoles(state.tileName);
+
+  if (singleRoles.length === 0) {
+    renderResult('warning', '⚠️ Tile Not Found',
+      `<p>No roles were found carrying a tile named <strong>"${_esc(state.tileName)}"</strong> in the FLPCA data.</p>
+       <p style="margin-top:8px">Please check the tile name spelling and try again.</p>`);
+    return;
+  }
+
+  // Step 3: Check AGR_USERS — filter by (Role Set 1 + Role Set 2) and USER_ID
+  const uniqueAssigned = _lookupUserAssignment(userId, allRoles, compositeRoles);
 
   if (uniqueAssigned.length === 0) {
+    // User not found in any role → output PROMPT PS1 message
     const singleRows = singleRoles.map(r =>
-      `<tr><td>${r}</td><td><span class="badge badge-green">Single</span></td></tr>`
+      `<tr><td>${_esc(r)}</td><td><span class="badge badge-green">Role Set 1</span><div class="role-meta">Single catalog role for tile in /UI2/FLPCA</div></td></tr>`
     ).join('');
     const compRows = compositeRoles.map(r =>
-      `<tr><td>${r}</td><td><span class="badge badge-blue">Composite</span></td></tr>`
+      `<tr><td>${_esc(r)}</td><td><span class="badge badge-blue">Role Set 2</span><div class="role-meta">Composite business role containing Role Set 1 in AGR_AGRS</div></td></tr>`
     ).join('');
-
     renderResult('error', '❌ Role Not Assigned',
-      `<p>User <strong>${userId}</strong> does not have access to any of the roles required for the <strong>"${state.tileName}"</strong> tile.</p>
-       <p style="margin-top:10px">Please request one of the following roles to be assigned:</p>
+      `<p>You (<strong>${_esc(userId)}</strong>) do not have access to any of the below roles (Role Set 1 + Role Set 2):</p>
        <table class="result-table" style="margin-top:10px">
-         <thead><tr><th>Role Name</th><th>Type</th></tr></thead>
+         <thead><tr><th>Role Name</th><th>Role Set &amp; Description</th></tr></thead>
          <tbody>${singleRows}${compRows}</tbody>
        </table>
        <ul class="next-steps" style="margin-top:14px">
@@ -607,63 +999,339 @@ function analyzePS1or2() {
        </ul>`
     );
   } else {
+    // User found in AGR_USERS → problem statement does not match original issue
     const rows = uniqueAssigned.map(r => {
-      const isComp = compositeRoles.includes(r.role);
-      const badge  = isComp
-        ? '<span class="badge badge-blue">Composite</span>'
-        : '<span class="badge badge-green">Single</span>';
-      return `<tr><td>${r.role}</td><td>${badge}</td><td>${r.fromDate}</td><td>${r.toDate}</td></tr>`;
+      const badge = r.isComp
+        ? '<span class="badge badge-blue">Role Set 2 (Composite)</span><div class="role-meta">Parent composite business role in AGR_AGRS</div>'
+        : '<span class="badge badge-green">Role Set 1 (Single)</span><div class="role-meta">Single catalog role in /UI2/FLPCA</div>';
+      return `<tr><td>${_esc(r.role)}</td><td>${badge}</td><td>${_esc(r.fromDate)}</td><td>${_esc(r.toDate)}</td></tr>`;
     }).join('');
-
     renderResult('success', '✅ Role Already Assigned',
-      `<p>User <strong>${userId}</strong> already has access to the following role(s) for tile <strong>"${state.tileName}"</strong>:</p>
+      `<p>You have access to the roles — your problem statement does not match the original issue.</p>
+       <p style="margin-top:8px">User <strong>${_esc(userId)}</strong> already holds the following role(s) for tile <strong>"${_esc(state.tileName)}"</strong>:</p>
        <table class="result-table" style="margin-top:10px">
-         <thead><tr><th>Role Name</th><th>Type</th><th>Valid From</th><th>Valid To</th></tr></thead>
+         <thead><tr><th>Role Name</th><th>Role Set &amp; Description</th><th>Valid From</th><th>Valid To</th></tr></thead>
          <tbody>${rows}</tbody>
        </table>
-       <p style="margin-top:12px"><strong>Your problem statement does not match the original issue.</strong> Since the role is assigned, consider the following:</p>
-       <ul class="next-steps">
+       <ul class="next-steps" style="margin-top:12px">
          <li>🔄 Clear browser cache and reload the Fiori Launchpad (Ctrl+Shift+Del).</li>
          <li>🔓 Log out completely and log back in to refresh role assignments.</li>
-         <li>⚙️ Ask your Basis team to verify OData service activation for the tile's catalog.</li>
-         <li>🟠 This may be <strong>Problem Statement 2</strong> — tile assigned but not visible. Investigate launchpad configuration.</li>
+         <li>🟠 If the tile still doesn't appear, try <strong>Problem Statement 2</strong> — tile provisioning check.</li>
        </ul>`
     );
   }
 }
 
-// ── PS3 ───────────────────────────────────────────────────────────────────────
-function analyzePS3() {
-  renderResult('info', 'ℹ️ Transaction Missing in Tile',
-    `<p>You reported that tile <strong>"${state.tileName}"</strong> is visible but transaction <strong>"${state.transaction}"</strong> is missing.</p>
-     <p style="margin-top:10px">To investigate this, your SAP admin should:</p>
-     <ul class="next-steps">
-       <li>🔍 Check if transaction <strong>${state.transaction}</strong> is included in the role's authorization objects.</li>
-       <li>📋 Review the role's menu entries in <strong>PFCG</strong> to ensure the transaction is listed.</li>
-       <li>⚙️ Verify the transaction is active and not restricted by organizational levels.</li>
-       <li>🔄 Re-generate the authorization profile if recently modified.</li>
-     </ul>
-     <p style="margin-top:10px" class="form-hint">Full automated analysis for PS3 requires AGR_1251.xlsx data (authorization object level). Ask your admin to upload that file for a deeper investigation.</p>`
+// ── PS2: Tile Not Visible After Assignment ────────────────────────────────────
+// STEPS: 1) FLPCA → Role Set 1 (all roles for tile name)
+//         2) FLPCA filtered: T/TM Match="Tile" or "Tile + TM" AND Semantic Object != blank → Role Set 2
+//         3) AGR_USERS AGR_NAME=Role Set 1, UNAME=USER_ID → Role Set 3 (roles the user actually has)
+// OUTPUT: If common role between Role Set 2 and Role Set 3 → "wrong problem statement, roles correctly set up"
+//         Else → "user has Role Set 3 but correct roles are Role Set 2; needs access to Role Set 2"
+function analyzePS2() {
+  const userId = state.userId.toUpperCase();
+  const flpcaRows = state.data.flpca;
+
+  // Step 1 — Role Set 1: all roles matching tile name in FLPCA
+  const tileNameLc = state.tileName.toLowerCase();
+  const allTileRows = flpcaRows.filter(
+    r => (r['Title/Subtitle/Information'] || '').toLowerCase() === tileNameLc
   );
+  const roleSet1 = [...new Set(
+    allTileRows.map(r => (r['Role'] || '').trim()).filter(Boolean)
+  )];
+
+  if (roleSet1.length === 0) {
+    renderResult('warning', '⚠️ Tile Not Found in FLPCA',
+      `<p>No catalog entry found for a tile named <strong>"${_esc(state.tileName)}"</strong>.</p>
+       <p style="margin-top:8px">Check the tile name spelling or ask your admin to verify the tile exists in the catalog.</p>`);
+    return;
+  }
+
+  // Step 2 — Role Set 2: fine-tuned filter — T/TM Match = "Tile + TM" (exact) AND Semantic Object != blank AND Action != blank
+  const TM_FIELD = 'Tile / Target Mapping Matching Text';
+  const filteredTileRows = allTileRows.filter(r => {
+    const tm     = (r[TM_FIELD] || '').trim();
+    const sem    = (r['Semantic Object'] || '').trim();
+    const action = (r['Action'] || '').trim();
+    return tm === 'Tile + TM' && sem !== '' && action !== '';
+  });
+  const roleSet2 = [...new Set(
+    filteredTileRows.map(r => (r['Role'] || '').trim()).filter(Boolean)
+  )];
+
+  // Build Semantic Object / Action info from Role Set 2 rows
+  const semObjValues = [...new Set(filteredTileRows.map(r => (r['Semantic Object'] || '').trim()).filter(Boolean))];
+  const actionValues  = [...new Set(filteredTileRows.map(r => (r['Action'] || '').trim()).filter(Boolean))];
+
+  // Step 3 — Role Set 3: AGR_USERS filtered by Role Set 1 + USER_ID
+  const userRows = state.data.agrusers || [];
+  const seen3 = new Set();
+  const roleSet3Entries = userRows
+    .filter(r =>
+      (r['UNAME'] || '').trim().toUpperCase() === userId &&
+      roleSet1.includes((r['AGR_NAME'] || '').trim())
+    )
+    .map(r => ({
+      role:     (r['AGR_NAME'] || '').trim(),
+      fromDate: (r['FROM_DAT'] || '').trim(),
+      toDate:   (r['TO_DAT']   || '').trim()
+    }))
+    .filter(r => { if (seen3.has(r.role)) return false; seen3.add(r.role); return true; });
+  const roleSet3 = roleSet3Entries.map(r => r.role);
+
+  // Intersection: common roles between Role Set 2 and Role Set 3
+  const commonRoles = roleSet2.filter(r => roleSet3.includes(r));
+
+  if (commonRoles.length > 0) {
+    // Common roles exist → wrong problem statement; tile is correctly set up
+    const commonRows = commonRoles.map(r =>
+      `<tr><td>${_esc(r)}</td><td><span class="badge badge-green">Correctly Set Up</span><div class="role-meta">Present in both Role Set 2 (fine-tuned Tile+TM) and Role Set 3 (assigned to user)</div></td></tr>`
+    ).join('');
+    renderResult('success', '✅ Tile Correctly Provisioned for User',
+      `<p>You have probably chosen the wrong problem statement. You have the following role(s) which are correctly set up for tile <strong>"${_esc(state.tileName)}"</strong> display:</p>
+       <table class="result-table" style="margin-top:10px">
+         <thead><tr><th>Role (Common — Role Set 2 ∩ Role Set 3)</th><th>Status &amp; Description</th></tr></thead>
+         <tbody>${commonRows}</tbody>
+       </table>
+       <ul class="next-steps" style="margin-top:14px">
+         <li>🔄 Clear browser cache and reload the Fiori Launchpad (Ctrl+Shift+Del).</li>
+         <li>🔓 Log out completely and log back in to refresh role assignments.</li>
+         <li>⚙️ If still not visible, ask your Basis team to verify OData service and cache settings.</li>
+       </ul>`
+    );
+  } else {
+    // No common roles → user has Role Set 3, but needs Role Set 2
+    const rs2Rows = roleSet2.length > 0
+      ? roleSet2.map(r => `<tr><td>${_esc(r)}</td><td><span class="badge badge-blue">Required (Role Set 2)</span><div class="role-meta">Catalog role with complete Tile + Target Mapping configuration</div></td></tr>`).join('')
+      : `<tr><td colspan="2" style="color:#9ca3af;">No correctly-provisioned roles found for this tile</td></tr>`;
+    const rs3Rows = roleSet3.length > 0
+      ? roleSet3.map(r => `<tr><td>${_esc(r)}</td><td><span class="badge badge-yellow">Assigned (Role Set 3)</span><div class="role-meta">User's currently assigned role from the initial tile role pool</div></td></tr>`).join('')
+      : `<tr><td colspan="2" style="color:#9ca3af;">User has no roles for this tile</td></tr>`;
+    const semRows = semObjValues.length > 0
+      ? semObjValues.map((so, i) =>
+          `<tr><td>${_esc(so)}</td><td>${_esc(actionValues[i] || '—')}</td></tr>`
+        ).join('')
+      : `<tr><td colspan="2" style="color:#9ca3af;">No semantic object/action found in Role Set 2</td></tr>`;
+
+    renderResult('error', '❌ User Lacks Correctly Provisioned Tile Role',
+      `<p>User (<strong>${_esc(userId)}</strong>) does have access to <strong>Role Set 3</strong> below, whereas the correct roles are <strong>Role Set 2</strong>.</p>
+       <p style="margin-top:10px">You need access to any role from <strong>Role Set 2</strong> (fine-tuned roles with Tile + TM):</p>
+       <table class="result-table" style="margin-top:10px">
+         <thead><tr><th>Role Name</th><th>Role Set &amp; Description</th></tr></thead>
+         <tbody>${rs2Rows}</tbody>
+       </table>
+       <p style="margin-top:14px"><strong>Currently Assigned Roles (Role Set 3 — user roles from tile pool):</strong></p>
+       <table class="result-table" style="margin-top:8px">
+         <thead><tr><th>Role Name</th><th>Role Set &amp; Description</th></tr></thead>
+         <tbody>${rs3Rows}</tbody>
+       </table>
+       <p style="margin-top:14px"><strong>Semantic Object &amp; Action (from Role Set 2 rows):</strong></p>
+       <table class="result-table" style="margin-top:8px">
+         <thead><tr><th>Semantic Object</th><th>Action</th></tr></thead>
+         <tbody>${semRows}</tbody>
+       </table>
+       <ul class="next-steps" style="margin-top:14px">
+         <li>🔧 Request your admin to assign one of the <strong>Role Set 2</strong> roles listed above.</li>
+         <li>🔄 After assignment, log out and back in to refresh the Fiori Launchpad.</li>
+       </ul>`
+    );
+  }
 }
 
-// ── PS4 ───────────────────────────────────────────────────────────────────────
-function analyzePS4() {
-  renderResult('info', 'ℹ️ Authorization Issue',
-    `<p>User <strong>${state.userId}</strong> has access to tile <strong>"${state.tileName}"</strong> but is experiencing an authorization failure.</p>
-     <p style="margin-top:10px">Missing authorization object reported: <strong>${state.auth}</strong></p>
-     <ul class="next-steps" style="margin-top:10px">
-       <li>🔍 Review the SU53 output to identify all missing authorization objects.</li>
-       <li>📋 Ask your SAP admin to add the missing object <strong>${state.auth}</strong> to the user's role in <strong>PFCG</strong>.</li>
-       <li>⚙️ After role update, regenerate the authorization profile and reassign to the user.</li>
-       <li>🔄 Ask the user to log out and back in to pick up the new authorizations.</li>
-     </ul>
-     <p style="margin-top:10px" class="form-hint">Full automated analysis for PS4 requires AGR_1251.xlsx authorization data. Ask your admin to upload that file for a complete role-level authorization check.</p>`
+// ── PS3: Transaction Missing in Tile ─────────────────────────────────────────
+// STEPS: 1) FLPCA Title=TILE_NAME → Role Set 1
+//         2) FLPCA T/TM="Tile or Tile+TM", Semantic Object!=blank, Role=Role Set 1 → Role Set 2
+//         3) AGR_USERS AGR_NAME=Role Set 2, UNAME=USER_ID → Role Set 3
+//         4) FLPCA Title=TILE_NAME AND Application Resource=MISSING_TRANSACTION_NAME → Role Set 4
+//         5) AGR_1251 AGR_NAME=Role Set 4, LOW=MISSING_TRANSACTION_NAME → Role Set 5
+// OUTPUT: Warn if Role Set 4 ≠ Role Set 5 (notify Security Admin).
+//         If Role Set 4 ∩ Role Set 3 → user has access to transaction.
+//         Else → request one of Role Set 4/Role Set 5 roles.
+function analyzePS3() {
+  const tileName = state.tileName;
+  const txnInput = state.transaction.toUpperCase();
+  const userId   = state.userId.toUpperCase();
+  const flpcaRows = state.data.flpca;
+  const tileNameLc = tileName.toLowerCase();
+
+  // Step 1 — Role Set 1: all FLPCA rows for tile name
+  const allTileRows = flpcaRows.filter(
+    r => (r['Title/Subtitle/Information'] || '').toLowerCase() === tileNameLc
   );
+  const roleSet1 = [...new Set(
+    allTileRows.map(r => (r['Role'] || '').trim()).filter(Boolean)
+  )];
+
+  if (roleSet1.length === 0) {
+    renderResult('warning', '⚠️ Tile Not Found in FLPCA',
+      `<p>No catalog entry found for tile <strong>"${_esc(tileName)}"</strong>. Check the tile name and try again.</p>`);
+    return;
+  }
+
+  // Step 2 — Role Set 2: fine-tuned FLPCA filter T/TM = "Tile + TM" (exact) AND Semantic Object != blank AND Action != blank, scoped to Role Set 1
+  const TM_FIELD = 'Tile / Target Mapping Matching Text';
+  const filteredTileRows = allTileRows.filter(r => {
+    const tm     = (r[TM_FIELD] || '').trim();
+    const sem    = (r['Semantic Object'] || '').trim();
+    const action = (r['Action'] || '').trim();
+    return tm === 'Tile + TM' && sem !== '' && action !== '';
+  });
+  const roleSet2 = [...new Set(
+    filteredTileRows.map(r => (r['Role'] || '').trim()).filter(Boolean)
+  )];
+
+  // Step 3 — Role Set 3: AGR_USERS filtered by Role Set 2 + USER_ID
+  const userRows = state.data.agrusers || [];
+  const seen3 = new Set();
+  const roleSet3Entries = userRows
+    .filter(r =>
+      (r['UNAME'] || '').trim().toUpperCase() === userId &&
+      roleSet2.includes((r['AGR_NAME'] || '').trim())
+    )
+    .map(r => ({ role: (r['AGR_NAME'] || '').trim() }))
+    .filter(r => { if (seen3.has(r.role)) return false; seen3.add(r.role); return true; });
+  const roleSet3 = roleSet3Entries.map(r => r.role);
+
+  // Step 4 — Role Set 4: FLPCA rows where Title=TILE_NAME AND Application Resource=MISSING_TRANSACTION_NAME
+  // (Try input txn, and if not found, try 'O' <-> '0' variations)
+  const APP_RES_FIELD = 'Application Ressource'; // SAP typo in field name
+  const txnVariants = _getO0Variants(txnInput);
+  let effectiveTxn = txnInput;
+  let txnTileRows = [];
+  let roleSet4 = [];
+
+  for (const variant of txnVariants) {
+    const rows = flpcaRows.filter(r =>
+      (r['Title/Subtitle/Information'] || '').toLowerCase() === tileNameLc &&
+      (r[APP_RES_FIELD] || '').trim().toUpperCase() === variant
+    );
+    if (rows.length > 0) {
+      txnTileRows = rows;
+      roleSet4 = [...new Set(rows.map(r => (r['Role'] || '').trim()).filter(Boolean))];
+      effectiveTxn = variant;
+      break;
+    }
+  }
+
+  // Step 5 — Role Set 5: AGR_1251 for Role Set 4 + LOW = MISSING_TRANSACTION_NAME
+  const agr1251 = state.data.agr1251;
+  let roleSet5 = [];
+  if (agr1251 && agr1251.length > 0 && roleSet4.length > 0) {
+    // Check with effectiveTxn first, fallback to alternate O/0 variants if needed
+    for (const variant of _getO0Variants(effectiveTxn)) {
+      const matchEntries = agr1251.filter(r =>
+        roleSet4.includes((r['AGR_NAME'] || '').trim()) &&
+        (r['LOW'] || '').trim().toUpperCase() === variant
+      );
+      if (matchEntries.length > 0) {
+        roleSet5 = [...new Set(matchEntries.map(r => (r['AGR_NAME'] || '').trim()))];
+        break;
+      }
+    }
+  }
+
+  // Warn if Role Set 4 ≠ Role Set 5 (security admin notification condition from PROMPT)
+  const rs4Set = new Set(roleSet4);
+  const rs5Set = new Set(roleSet5);
+  const rs4Diff = roleSet4.filter(r => !rs5Set.has(r));
+  const rs5Diff = roleSet5.filter(r => !rs4Set.has(r));
+  const roleSetsIdentical = rs4Diff.length === 0 && rs5Diff.length === 0;
+  const adminWarning = (!roleSetsIdentical && (roleSet4.length > 0 || roleSet5.length > 0))
+    ? `<div class="result-box warning" style="margin-top:14px;">
+         <div class="result-title">⚠️ Security Admin Notification Required</div>
+         <p>Role Set 4 and Role Set 5 are not identical — the transaction <strong>${_esc(effectiveTxn)}</strong> is missing from some roles in the FLPCA/AGR_1251 data. Please notify your Security Admin.</p>
+         ${rs4Diff.length > 0 ? `<p style="margin-top:8px">In Role Set 4 but not Role Set 5: <strong>${rs4Diff.map(_esc).join(', ')}</strong></p>` : ''}
+         ${rs5Diff.length > 0 ? `<p style="margin-top:6px">In Role Set 5 but not Role Set 4: <strong>${rs5Diff.map(_esc).join(', ')}</strong></p>` : ''}
+       </div>` : '';
+
+  // If Role Set 4 is empty (transaction not found in FLPCA at all)
+  if (roleSet4.length === 0) {
+    const rs2Rows = roleSet2.length > 0
+      ? roleSet2.map(r => `<tr><td>${_esc(r)}</td></tr>`).join('')
+      : `<tr><td style="color:#9ca3af;">No correctly provisioned roles found</td></tr>`;
+    renderResult('error', '❌ Transaction Not Linked to Tile in FLPCA',
+      `<p>Transaction <strong>${_esc(txnInput)}</strong> was not found as an application resource for tile <strong>"${_esc(tileName)}"</strong> in FLPCA.</p>
+       <p style="margin-top:10px">Kindly request one of the following applicable roles (Role Set 2) from your security admin:</p>
+       <table class="result-table" style="margin-top:8px">
+         <thead><tr><th>Role (Role Set 2)</th></tr></thead>
+         <tbody>${rs2Rows}</tbody>
+       </table>
+       <ul class="next-steps" style="margin-top:14px">
+         <li>📋 Ask your admin to verify the transaction is linked to the tile in <strong>PFCG → Menu</strong>.</li>
+         <li>🔄 After update, log out and back in.</li>
+       </ul>${adminWarning}`
+    );
+    return;
+  }
+
+  // Intersection: Role Set 4 ∩ Role Set 3 ∩ Role Set 5
+  // A role only grants real access when it appears in the FLPCA catalog (RS4),
+  // is assigned to the user (RS3), AND has the S_TCODE backend authorization (RS5).
+  // Checking RS4 ∩ RS3 alone is insufficient — RS3 may contain roles that are in
+  // RS4 but missing from RS5 (no backend S_TCODE auth), giving a false positive.
+  const commonRoles = agr1251 && agr1251.length > 0
+    ? roleSet4.filter(r => roleSet3.includes(r) && roleSet5.includes(r))
+    : roleSet4.filter(r => roleSet3.includes(r)); // AGR_1251 not uploaded — fall back to RS4 ∩ RS3
+
+  const rs4Rows = roleSet4.map(r => {
+    const inRs3 = roleSet3.includes(r);
+    const inRs5 = roleSet5.includes(r);
+    return `<tr><td>${_esc(r)}</td>
+              <td>${inRs3 ? '<span class="badge badge-green">Assigned to User</span>' : '<span class="badge badge-red">Not Assigned</span>'}</td>
+              <td>${agr1251 ? (inRs5 ? '<span class="badge badge-green">Found in AGR_1251</span>' : '<span class="badge badge-red">Missing in AGR_1251</span>') : '<span class="badge badge-yellow">AGR_1251 not uploaded</span>'}</td>
+            </tr>`;
+  }).join('');
+
+  if (commonRoles.length > 0) {
+    renderResult('success', '✅ User Has Access to Transaction',
+      `<p>User (<strong>${_esc(userId)}</strong>) has access to transaction <strong>${_esc(effectiveTxn)}</strong> for the below roles:</p>
+       <p class="role-meta" style="margin-top:4px;margin-bottom:8px;"><strong>Role Set 4:</strong> Roles linking tile to transaction in /UI2/FLPCA | <strong>AGR_1251 (Role Set 5):</strong> Backend PFCG S_TCODE profile authorization</p>
+       <table class="result-table" style="margin-top:10px">
+         <thead><tr><th>Role (Role Set 4 — Catalog Txn Role)</th><th>Assigned to User (Role Set 3)</th><th>In AGR_1251 (Role Set 5)</th></tr></thead>
+         <tbody>${rs4Rows}</tbody>
+       </table>
+       <p style="margin-top:12px"><strong>Common roles (Role Set 4 ∩ Role Set 3 ∩ Role Set 5):</strong> ${commonRoles.map(_esc).join(', ')}</p>
+       <ul class="next-steps" style="margin-top:12px">
+         <li>🔄 Re-generate the authorization profile in PFCG and reassign the role to the user.</li>
+         <li>⚙️ Verify the transaction is active in the system (SE93).</li>
+         <li>📋 Ask the user to log out and back in.</li>
+       </ul>${adminWarning}`
+    );
+  } else {
+    const isRs4 = roleSet4.length > 0;
+    const displayRoles = isRs4 ? roleSet4 : roleSet5;
+    const roleSetLabel = isRs4 ? 'Role Set 4 (Catalog Transaction Roles)' : 'Role Set 5 (PFCG Backend Authorized Roles)';
+    const roleSetDesc = isRs4
+      ? 'Roles exposing this transaction under the tile in /UI2/FLPCA'
+      : 'Roles containing backend S_TCODE authorization in AGR_1251';
+    const displayRows = displayRoles.map(r =>
+      `<tr><td>${_esc(r)}</td><td><span class="badge badge-blue">Role Set ${isRs4 ? '4' : '5'}</span><div class="role-meta">${roleSetDesc}</div></td></tr>`
+    ).join('');
+    renderResult('error', '❌ User Missing Transaction Access',
+      `<p>Kindly request one of the following roles which is applicable to user (<strong>${_esc(userId)}</strong>), or ask your security admin to assign an applicable role:</p>
+       <table class="result-table" style="margin-top:10px">
+         <thead><tr><th>Role Name</th><th>Role Set &amp; Description</th></tr></thead>
+         <tbody>${displayRows}</tbody>
+       </table>
+       <p style="margin-top:12px"><strong>Full Role Set 4 status:</strong></p>
+       <p class="role-meta" style="margin-top:2px;margin-bottom:8px;"><strong>Role Set 4:</strong> Catalog roles | <strong>Role Set 3:</strong> User assigned | <strong>Role Set 5:</strong> Backend S_TCODE in AGR_1251</p>
+       <table class="result-table" style="margin-top:8px">
+         <thead><tr><th>Role (Role Set 4)</th><th>Assigned to User (Role Set 3)</th><th>In AGR_1251 (Role Set 5)</th></tr></thead>
+         <tbody>${rs4Rows}</tbody>
+       </table>
+       <ul class="next-steps" style="margin-top:14px">
+         <li>🔧 Request your admin to assign one of the roles above that is applicable to your job function.</li>
+         <li>🔄 After assignment, log out and back in.</li>
+       </ul>${adminWarning}`
+    );
+  }
 }
 
 // ─── Render Result ────────────────────────────────────────────────────────────
 function renderResult(type, title, body) {
+  // Capture outcome before rendering so auditLog (called after) can read it
+  _currentOutcome = { type, title };
   document.getElementById('result-content').innerHTML =
     `<div class="result-box ${type}">
        <div class="result-title">${title}</div>
@@ -674,21 +1342,11 @@ function renderResult(type, title, body) {
 // ─── Restart ──────────────────────────────────────────────────────────────────
 document.getElementById('btn-restart').addEventListener('click', () => {
   state.ps = null;
-  state.userId = state.tileName = state.transaction = state.auth = '';
+  state.userId = state.tileName = state.transaction = '';
 
-  ['input-userid','input-tile','input-transaction','input-auth'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  ['fname-ps3-screenshot','fname-su53-screenshot'].forEach(id => {
+  ['input-userid','input-tile','input-transaction'].forEach(id => {
     const el = document.getElementById(id);
-    el.textContent = ''; el.classList.add('hidden');
-  });
-  ['file-ps3-screenshot','file-su53-screenshot'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  ['preview-ps3-screenshot','preview-su53-screenshot'].forEach(id => {
-    const el = document.getElementById(id);
-    el.src = ''; el.classList.add('hidden');
+    if (el) el.value = '';
   });
   document.querySelectorAll('.ps-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('btn-ps-next').disabled = true;
@@ -696,6 +1354,7 @@ document.getElementById('btn-restart').addEventListener('click', () => {
 
   hide('step-inputs'); hide('step-result');
   show('step-ps');
+  setPills(1);
 });
 </script>
 
